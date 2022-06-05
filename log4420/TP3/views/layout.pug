@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/structure.css')
+    title #{title}
+  body
+    header
+      nav.navbar-fix-top
+        div.navbar-body
+          div#navbar-nav-list
+            div#navAccueil.navbar-nav-item(selected=selected==='accueil' ? 'true' : false)
+              a(href='/') Accueil
+            div#navTableauDeBord.navbar-nav-item(selected=selected==='tableauDeBord' ? 'true' : false)
+              a(href='/tableauDeBord')  Tableau de bord
+            div#navInstruction.navbar-nav-item(selected=selected==='instruction' ? 'true' : false)
+              a(href='/instruction')  Instruction
+    block content
+    footer.footer
+      p Philippe Fortin : 1716309
+      p Maxime Clavel : 1693596

@@ -1,0 +1,9 @@
+function direction = Direction( theta, phi )
+%DIRECTION Summary of this function goes here
+%   Detailed explanation goes here
+direction = ...
+    [sind(phi)*cosd(theta),...
+     sind(phi)*sind(theta),...
+     cosd(phi)];
+end
+

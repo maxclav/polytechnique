@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SetCalculatorImpl.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">ListeChaineeTestEC (14-Feb-2018 11:33:18 PM)</a> &gt; <a href="../../index.html" class="el_group">ListeChaineeProject</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main</a> &gt; <span class="el_source">SetCalculatorImpl.java</span></div><h1>SetCalculatorImpl.java</h1><pre class="source lang-java linenums">/**
+ * @class			: SetCalculatorImpl
+ * @interface		: SetCalculator
+ * @author	 		: Ons mlouki
+ * 					  Ons.mlouki@gmail.com
+ * 					  
+ */
+package main;
+
+import java.util.ArrayList;
+
+<span class="fc" id="L12">public class SetCalculatorImpl implements SetCalculator {</span>
+		
+	  public ArrayList&lt;Object&gt; union(ArrayList&lt;Object&gt; setA, ArrayList&lt;Object&gt; setB) {
+<span class="fc" id="L15">		  ArrayList&lt;Object&gt; tmp = new ArrayList&lt;Object&gt; (setA);</span>
+<span class="fc bfc" id="L16" title="All 2 branches covered.">		    for(Object a:setB){</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">		    	if(!setA.contains(a))</span>
+<span class="fc" id="L18">		    		tmp.add(a);</span>
+		    }
+<span class="fc" id="L20">		    return tmp;</span>
+		  }
+
+		  public ArrayList&lt;Object&gt; intersection(ArrayList&lt;Object&gt; setA, ArrayList&lt;Object&gt; setB) {
+<span class="fc" id="L24">			  ArrayList&lt;Object&gt; tmp = new ArrayList&lt;Object&gt;();</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		    for (Object x : setA)</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">		      if (setB.contains(x))</span>
+<span class="fc" id="L27">		        tmp.add(x);</span>
+<span class="fc" id="L28">		    return tmp;</span>
+		  }
+
+		  public ArrayList&lt;Object&gt; difference(ArrayList&lt;Object&gt; setA, ArrayList&lt;Object&gt; setB) {
+<span class="fc" id="L32">			ArrayList&lt;Object&gt; tmp = new ArrayList&lt;Object&gt;(setA);</span>
+<span class="fc" id="L33">		    tmp.removeAll(setB);</span>
+<span class="fc" id="L34">		    return tmp;</span>
+		  }
+
+		  public ArrayList&lt;Object&gt; symDifference(ArrayList&lt;Object&gt; setA, ArrayList&lt;Object&gt; setB) {
+			ArrayList&lt;Object&gt; tmpA;
+			ArrayList&lt;Object&gt; tmpB;
+
+<span class="fc" id="L41">		    tmpA = union(setA, setB);</span>
+<span class="fc" id="L42">		    tmpB = intersection(setA, setB);</span>
+<span class="fc" id="L43">		    return difference(tmpA, tmpB);</span>
+		  }
+
+		  public &lt;T&gt; ArrayList&lt;T&gt; isSubset(ArrayList&lt;Object&gt; setA, ArrayList&lt;Object&gt; setB) {
+<span class="fc" id="L47">			  ArrayList&lt;T&gt; tmp = new ArrayList&lt;T&gt;();</span>
+<span class="fc" id="L48">			  tmp.add((T) String.valueOf(setB.containsAll(setA)));</span>
+<span class="fc" id="L49">		    return tmp;</span>
+		  }
+
+		  public &lt;T&gt; ArrayList&lt;T&gt; isSuperset(ArrayList&lt;Object&gt; setA, ArrayList&lt;Object&gt; setB) {
+<span class="fc" id="L53">			  ArrayList&lt;T&gt; tmp = new ArrayList&lt;T&gt;(); </span>
+<span class="fc" id="L54">			  tmp.add((T) String.valueOf(setA.containsAll(setB)));</span>
+<span class="fc" id="L55">			  return tmp;</span>
+		  }
+		  
+		  
+//		  public static &lt;T&gt; Set&lt;T&gt; union(Set&lt;T&gt; setA, Set&lt;T&gt; setB) {
+//			    Set&lt;T&gt; tmp = new TreeSet&lt;T&gt;(setA);
+//			    tmp.addAll(setB);
+//			    return tmp;
+//			  }
+//
+//			  public static &lt;T&gt; Set&lt;T&gt; intersection(Set&lt;T&gt; setA, Set&lt;T&gt; setB) {
+//			    Set&lt;T&gt; tmp = new TreeSet&lt;T&gt;();
+//			    for (T x : setA)
+//			      if (setB.contains(x))
+//			        tmp.add(x);
+//			    return tmp;
+//			  }
+//
+//			  public static &lt;T&gt; Set&lt;T&gt; difference(Set&lt;T&gt; setA, Set&lt;T&gt; setB) {
+//			    Set&lt;T&gt; tmp = new TreeSet&lt;T&gt;(setA);
+//			    tmp.removeAll(setB);
+//			    return tmp;
+//			  }
+//
+//			  public static &lt;T&gt; Set&lt;T&gt; symDifference(Set&lt;T&gt; setA, Set&lt;T&gt; setB) {
+//			    Set&lt;T&gt; tmpA;
+//			    Set&lt;T&gt; tmpB;
+//
+//			    tmpA = union(setA, setB);
+//			    tmpB = intersection(setA, setB);
+//			    return difference(tmpA, tmpB);
+//			  }
+//
+//			  public static &lt;T&gt; boolean isSubset(Set&lt;T&gt; setA, Set&lt;T&gt; setB) {
+//			    return setB.containsAll(setA);
+//			  }
+//
+//			  public static &lt;T&gt; boolean isSuperset(Set&lt;T&gt; setA, Set&lt;T&gt; setB) {
+//			    return setA.containsAll(setB);
+//			  }
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>ListeChaineeTestEC (14-Feb-2018 11:33:18 PM)</div></body></html>

@@ -1,0 +1,11 @@
+tp1:
+
+Maxime Clavel:		4 heures
+Philippe Fortin:	3.5 heures
+
+Total:				7.5 heures
+
+tp2:
+
+Maxime Clavel:		x heures
+Philippe Fortin:	y heures

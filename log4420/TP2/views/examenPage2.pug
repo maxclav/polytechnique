@@ -1,0 +1,23 @@
+extend questionLayout
+block questionForm
+  section.sub-container
+    h2.sub-container-title Question 2
+      div.sub-title Quelle nouvelle balise de section permet de regrouper un contenu tangentiel au contenu principal du document ?
+    form(action='/resultat')
+      div
+        label.form-label(for='reponse1')
+          input.form-input#reponse1(name='question', type='radio')
+          |  section id="sidebar"
+      div
+        label.form-label(for='reponse2')
+          input.form-input#reponse2(name='question', type='radio')
+          |  sidebar
+      div
+        label.form-label(for='reponse3')
+          input.form-input#reponse3(name='question', type='radio')
+          |  aside
+      div
+        label.form-label(for='reponse4')
+          input.form-input#reponse4(name='question', type='radio')
+          |  details
+      input.default-button.col-m-12.col-12(type='submit' value="Question suivante")

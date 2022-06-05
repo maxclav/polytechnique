@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">ListeChaineeTestEC (14-Feb-2018 11:33:18 PM)</a> &gt; <a href="../../index.html" class="el_group">ListeChaineeProject</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">/**
+ * @class			: Main
+ * @author	 		: Ons mlouki
+ * 					  Ons.mlouki@gmail.com
+ * 
+ */
+package main;
+
+import java.util.ArrayList;
+
+<span class="nc" id="L11">public class Main {</span>
+
+	public static void main(String[] args) throws Exception {
+		
+		// call for main operation
+		//suiteChainee.build(op, val1, val2) 
+		//op{union, intersection, difference, symDifference, isSubset, isSuperset}
+		//val1,val2 are sets
+////////////////////////////////////////////////////Build parameter//////////////////////////		
+<span class="nc" id="L20">		ArrayList&lt;Object&gt; val1 = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L21">		ArrayList&lt;Object&gt; val2 = new ArrayList&lt;Object&gt;();</span>
+		
+<span class="nc" id="L23">		val1.add(4);</span>
+<span class="nc" id="L24">		val1.add(1);</span>
+<span class="nc" id="L25">		val2.add(1);</span>
+<span class="nc" id="L26">		val2.add(1);</span>
+///////////////////////////////////////////////////listeChainee////////////////////////////////////////		
+<span class="nc" id="L28">		MyList list = new MyListImpl();	</span>
+<span class="nc" id="L29">		ListeChainee suiteChainee= new ListeChaineeImpl();</span>
+		
+<span class="nc" id="L31">		list = suiteChainee.build(&quot;isSuperset&quot;, val1, val2);</span>
+//////////////////////////////////////////////////listeChainee printer//////////////////////////////////	
+<span class="nc" id="L33">		StringBuilder chaineContent=new StringBuilder();</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">		for(int i=0; i&lt;list.getSize();i++){</span>
+<span class="nc" id="L35">			chaineContent.append(&quot; &quot;+list.getAt(i));</span>
+		}	
+<span class="nc" id="L37">		System.out.println(&quot;MaListe :&quot;+chaineContent);</span>
+////////////////////////////////////////////////gestion d'une listeChainee			
+<span class="nc" id="L39">		list.add(val1);</span>
+<span class="nc" id="L40">		list.getAt(0);</span>
+<span class="nc" id="L41">		list.removeAt(3);</span>
+<span class="nc" id="L42">		list.removeItem(val1);</span>
+<span class="nc" id="L43">		list.setAt(val1, 0);</span>
+<span class="nc" id="L44">		list.getSize();</span>
+<span class="nc" id="L45">		list.reset();</span>
+//////////////////////////////////////////////////listeChainee printer//////////////////////////////////
+<span class="nc" id="L47">		StringBuilder chaineContent2=new StringBuilder();</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">		for(int i=0; i&lt;list.getSize();i++){</span>
+<span class="nc" id="L49">			chaineContent2.append(&quot; &quot;+list.getAt(i));</span>
+		}	
+<span class="nc" id="L51">		System.out.println(&quot;MaListe :&quot;+chaineContent2);</span>
+<span class="nc" id="L52">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>ListeChaineeTestEC (14-Feb-2018 11:33:18 PM)</div></body></html>

@@ -1,0 +1,55 @@
+tp 1: Client: HTML5
+
+Maxime Clavel:		4
+Philippe Fortin:	3.5
+
+Total (tp 1):		7.5 heures
+
+------------------------------
+tp 2: Client: CSS3
+
+Maxime Clavel:		4
+Philippe Fortin:	12
+
+Total (tp 2):		16 heures
+
+-----------------------------
+tp 3: Client: Javascript
+
+Maxime Clavel:		x
+Philippe Fortin:	y
+
+Total (tp 3):		z heures
+
+-----------------------------
+tp 4: Serveur: Application web
+
+Maxime Clavel:		x
+Philippe Fortin:	y
+
+Total (tp 4):		z heures
+
+-----------------------------
+tp 5: Serveur: Persistence des données	
+
+Maxime Clavel:		x
+Philippe Fortin:	y
+
+Total (tp 5):		z heures
+
+-----------------------------
+tp 6: Serveur: Service web
+
+Maxime Clavel:		x
+Philippe Fortin:	y
+
+Total (tp6):		z heures
+
+=============================
+
+Tous les TPs
+
+Maxime Clavel:		8
+Philippe Fortin:	15.5
+
+TOTAL:				23.5 heures

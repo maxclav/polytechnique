@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ListeChaineeTestAC.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">ListeChaineeTestEC (14-Feb-2018 11:33:18 PM)</a> &gt; <a href="../../index.html" class="el_group">ListeChaineeProject</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main</a> &gt; <span class="el_source">ListeChaineeTestAC.java</span></div><h1>ListeChaineeTestAC.java</h1><pre class="source lang-java linenums">package main;
+
+/**
+ * @class	ListeChaineeTestEC
+ * @author	maclab
+ *			Étudiant génie logiciel (concentration multimédia)
+ * 
+ * Date:	30 janvier 2018
+ * Cours:	Méthodes de test et de validation du logiciel (LOG3430)
+ * École:	Polytechnique Montréal
+ * 
+ * Informations:
+ * Cette classe test la classe ListeChainee.java
+ * en utilisant la technique de test boîte noire catégorie partition EC (Each Choice)
+ * et en utilisant le critère AC (All Combinations).
+ * ListeChainee prend en entrée 2 objets de type ArrayList et un objet de type String
+ * et retourne un objet de type MyList.
+ */
+
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import main.ListeChaineeImpl;
+import main.MyList;
+import main.MyListImpl;
+
+<span class="nc" id="L33">public class ListeChaineeTestAC {</span>
+	
+	private ListeChaineeImpl listeChainee_;
+	
+	private MyList myListExpected_;
+	
+	private MyList myListActual_;
+	ArrayList&lt;Object&gt; result;
+	
+	/* Attributs valides/invalides de val1 (2 valeurs possibles) */
+	private ArrayList&lt;Object&gt; val1_1;
+	private ArrayList&lt;Object&gt; val1_2;
+	
+	/* Attributs valides/invalides de val2 (2 valeurs possibles) */
+	private ArrayList&lt;Object&gt; val2_1;
+	private ArrayList&lt;Object&gt; val2_2;
+	
+	/* Attributs valides/invalides de &quot;op&quot; (7 valeurs possibles) */
+<span class="nc" id="L51">	final private String union_ = &quot;union&quot;;</span>
+<span class="nc" id="L52">	final private String intersection_ = &quot;intersection&quot;;</span>
+<span class="nc" id="L53">	final private String difference_ = &quot;difference&quot;;</span>
+<span class="nc" id="L54">	final private String symmetricDifference_ = &quot;symDifference&quot;;</span>
+<span class="nc" id="L55">	final private String isSubset_ = &quot;isSubset&quot;;</span>
+<span class="nc" id="L56">	final private String isSuperset_ = &quot;isSuperset&quot;;</span>
+<span class="nc" id="L57">	final private String invalidOp_ = &quot;opérateur_invalide&quot;;</span>
+	
+	// Pour les résultats
+	StringBuilder chaineContent;
+
+	@Before
+	public void setUp() throws Exception {
+		
+<span class="nc" id="L65">		listeChainee_ = new ListeChaineeImpl();</span>
+		
+<span class="nc" id="L67">		myListExpected_ = new MyListImpl();</span>
+		
+<span class="nc" id="L69">		myListActual_ = new MyListImpl();</span>
+<span class="nc" id="L70">		result = new ArrayList&lt;Object&gt;();</span>
+		
+<span class="nc" id="L72">		val1_1 = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L73">		val1_1.add(1);</span>
+<span class="nc" id="L74">		val1_1.add(2);</span>
+		
+<span class="nc" id="L76">		val1_2 = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L77">		val1_2.add(&quot;a&quot;);</span>
+<span class="nc" id="L78">		val1_2.add(&quot;b&quot;);</span>
+		
+<span class="nc" id="L80">		val2_1 = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L81">		val2_1.add(1);</span>
+<span class="nc" id="L82">		val2_1.add(3);</span>
+		
+<span class="nc" id="L84">		val2_2 = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L85">		val2_2.add(&quot;a&quot;);</span>
+<span class="nc" id="L86">		val2_2.add(&quot;b&quot;);</span>
+		
+<span class="nc" id="L88">		chaineContent = new StringBuilder();</span>
+<span class="nc" id="L89">	}</span>
+	
+	@After
+	public void tearDown() throws Exception {
+<span class="nc" id="L93">		myListExpected_.reset();</span>
+<span class="nc" id="L94">		myListActual_.reset();</span>
+<span class="nc" id="L95">		result.clear();</span>
+<span class="nc" id="L96">		chaineContent.setLength(0);</span>
+<span class="nc" id="L97">	}</span>
+
+	/*
+	 * TEST #1
+	 * val1_1 ∪ val2_1 = resultat
+	 * [1, 2] ∪ [1, 3] = [1, 2, 3] (Expected)
+	 */
+	@Test
+	public void test1() throws IOException {	
+<span class="nc" id="L106">		System.out.println(&quot;TEST #1: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="nc" id="L109">		result.add(1);</span>
+<span class="nc" id="L110">		result.add(2);</span>
+<span class="nc" id="L111">		result.add(3);</span>
+		
+<span class="nc" id="L113">		myListExpected_.add(val1_1);</span>
+<span class="nc" id="L114">		myListExpected_.add(val2_1);</span>
+<span class="nc" id="L115">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="nc" id="L118">			myListActual_ = listeChainee_.build(union_, val1_1, val2_1);</span>
+<span class="nc" id="L119">		}</span>
+<span class="nc" id="L120">		catch (final Throwable t)  {</span>
+<span class="nc" id="L121">			fail(&quot;Erreur test 1. &quot;);</span>
+		}
+		
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="nc" id="L125">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="nc" id="L127">		System.out.println(&quot;MyList :&quot; + chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="nc" id="L130">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="nc" id="L133">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="nc" id="L136">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="nc" id="L139">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L142">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L143">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="nc" id="L144">	}</span>
+	
+	/*
+	 * TEST #2
+	 * val1_1 ∩ val2_1 = resultat
+	 * [1, 2] ∩ [1, 3] = [1] (Expected)
+	 */
+	@Test
+	public void test2() throws IOException {	
+<span class="nc" id="L153">		System.out.println(&quot;TEST #2: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="nc" id="L156">		result.add(1);</span>
+		
+<span class="nc" id="L158">		myListExpected_.add(val1_1);</span>
+<span class="nc" id="L159">		myListExpected_.add(val2_1);</span>
+<span class="nc" id="L160">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="nc" id="L163">			myListActual_ = listeChainee_.build(intersection_, val1_1, val2_1);</span>
+<span class="nc" id="L164">		}</span>
+<span class="nc" id="L165">		catch (final Throwable t)  {</span>
+<span class="nc" id="L166">			fail(&quot;Erreur test 2. &quot;);</span>
+		}
+		
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="nc" id="L170">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="nc" id="L172">		System.out.println(&quot;MyList :&quot; + chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="nc" id="L175">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="nc" id="L178">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="nc" id="L181">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="nc" id="L184">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L187">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L188">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="nc" id="L189">	}</span>
+	
+	/*
+	 * TEST #3
+	 * val1_1 \ val2_1 = resultat
+	 * [1, 2] \ [1, 3] = [2] (Expected)
+	 */
+	@Test
+	public void test3() throws IOException {	
+<span class="nc" id="L198">		System.out.println(&quot;TEST #3: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="nc" id="L201">		result.add(2);</span>
+		
+<span class="nc" id="L203">		myListExpected_.add(val1_1);</span>
+<span class="nc" id="L204">		myListExpected_.add(val2_1);</span>
+<span class="nc" id="L205">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="nc" id="L208">			myListActual_ = listeChainee_.build(difference_, val1_1, val2_1);</span>
+<span class="nc" id="L209">		}</span>
+<span class="nc" id="L210">		catch (final Throwable t)  {</span>
+<span class="nc" id="L211">			fail(&quot;Erreur test 3. &quot;);</span>
+		}
+		
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="nc" id="L215">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="nc" id="L217">		System.out.println(&quot;MyList :&quot; + chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="nc" id="L220">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="nc" id="L223">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="nc" id="L226">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="nc" id="L229">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L232">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L233">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="nc" id="L234">	}</span>
+	
+	/*
+	 * TEST #4
+	 * val1_1 ∆ val2_1 = resultat
+	 * [1, 2] ∆ [1, 3] = [2, 3] (Expected)
+	 */
+	@Test
+	public void test4() throws IOException {	
+<span class="nc" id="L243">		System.out.println(&quot;TEST #4: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="nc" id="L246">		result.add(2);</span>
+<span class="nc" id="L247">		result.add(3);</span>
+		
+<span class="nc" id="L249">		myListExpected_.add(val1_1);</span>
+<span class="nc" id="L250">		myListExpected_.add(val2_1);</span>
+<span class="nc" id="L251">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="nc" id="L254">			myListActual_ = listeChainee_.build(symmetricDifference_, val1_1, val2_1);</span>
+<span class="nc" id="L255">		}</span>
+<span class="nc" id="L256">		catch (final Throwable t)  {</span>
+<span class="nc" id="L257">			fail(&quot;Erreur test 4. &quot;);</span>
+		}
+		
+<span class="nc bnc" id="L260" title="All 2 branches missed.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="nc" id="L261">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="nc" id="L263">		System.out.println(&quot;MyList :&quot; + chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="nc" id="L266">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="nc" id="L269">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="nc" id="L272">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="nc" id="L275">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L278">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L279">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="nc" id="L280">	}</span>
+	
+	/*
+	 * TEST #5
+	 * val1_1 ⊆ val2_1 = resultat
+	 * [1, 2] ⊆ [1, 3] = false (Expected)
+	 */
+	@Test
+	public void test5() throws IOException {	
+<span class="nc" id="L289">		System.out.println(&quot;TEST #5: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="nc" id="L292">		result.add(&quot;false&quot;);</span>
+		
+<span class="nc" id="L294">		myListExpected_.add(val1_1);</span>
+<span class="nc" id="L295">		myListExpected_.add(val2_1);</span>
+<span class="nc" id="L296">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="nc" id="L299">			myListActual_ = listeChainee_.build(isSubset_, val1_1, val2_1);</span>
+<span class="nc" id="L300">		}</span>
+<span class="nc" id="L301">		catch (final Throwable t)  {</span>
+<span class="nc" id="L302">			fail(&quot;Erreur test 5. &quot;);</span>
+		}
+		
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="nc" id="L306">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="nc" id="L308">		System.out.println(&quot;MyList :&quot; + chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="nc" id="L311">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="nc" id="L314">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="nc" id="L317">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="nc" id="L320">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L323">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L324">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="nc" id="L325">	}</span>
+	
+	/*
+	 * TEST #6
+	 * val1_1 ⊇ val2_1 = resultat
+	 * [1, 2] ⊇ [1, 3] = false (Expected)
+	 */
+	@Test
+	public void test6() throws IOException {	
+<span class="nc" id="L334">		System.out.println(&quot;TEST #6: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="nc" id="L337">		result.add(&quot;false&quot;);</span>
+		
+<span class="nc" id="L339">		myListExpected_.add(val1_1);</span>
+<span class="nc" id="L340">		myListExpected_.add(val2_1);</span>
+<span class="nc" id="L341">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="nc" id="L344">			myListActual_ = listeChainee_.build(isSuperset_, val1_1, val2_1);</span>
+<span class="nc" id="L345">		}</span>
+<span class="nc" id="L346">		catch (final Throwable t)  {</span>
+<span class="nc" id="L347">			fail(&quot;Erreur test 6. &quot;);</span>
+		}
+		
+<span class="nc bnc" id="L350" title="All 2 branches missed.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="nc" id="L351">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="nc" id="L353">		System.out.println(&quot;MyList :&quot; + chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="nc" id="L356">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="nc" id="L359">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="nc" id="L362">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="nc" id="L365">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L368">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L369">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="nc" id="L370">	}</span>
+	
+	/*
+	 * TEST #7: CE TEST DEVRAIT DONNER UNE ERREUR
+	 * val1_1 &quot;op_invalid&quot; val2_1 = resultat
+	 * [1, 2] &quot;op_invalid&quot; [1, 3] = false (Expected)
+	 */
+	@Test
+	public void test7() throws IOException {	
+		
+<span class="nc" id="L380">		System.out.println(&quot;TEST #7: &quot;);</span>
+
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L384">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L385">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+			
+<span class="nc" id="L387">			myListActual_ = listeChainee_.build(invalidOp_, val1_1, val2_1);</span>
+<span class="nc" id="L388">		}</span>
+
+<span class="nc" id="L390">		catch (final Throwable t) {</span>
+<span class="nc" id="L391">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L392">			fail(&quot;Erreur test 7. &quot;);</span>
+		}
+<span class="nc" id="L394">	}</span>
+	
+	/*
+	 * TEST #8
+	 * val1_1 ∪ val2_2 = resultat
+	 * [1, 2] ∪ [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test8() throws IOException {
+<span class="nc" id="L403">		System.out.println(&quot;TEST #8: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L407">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L408">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L410">			myListActual_ = listeChainee_.build(union_, val1_1, val2_2);</span>
+<span class="nc" id="L411">		}</span>
+<span class="nc" id="L412">		catch (final Throwable t)  {</span>
+<span class="nc" id="L413">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L414">			fail(&quot;Erreur test 8. &quot;);</span>
+		}
+<span class="nc" id="L416">	}</span>
+	
+	/*
+	 * TEST #9
+	 * val1_1 ∩ val2_2 = resultat
+	 * [1, 2] ∩ [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test9() throws IOException {
+<span class="nc" id="L425">		System.out.println(&quot;TEST #9: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L429">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L430">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L432">			myListActual_ = listeChainee_.build(intersection_, val1_1, val2_2);</span>
+<span class="nc" id="L433">		} catch (final Throwable t)  {</span>
+<span class="nc" id="L434">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L435">			fail(&quot;Erreur test 9. &quot;);</span>
+		}
+<span class="nc" id="L437">	}</span>
+	
+	/*
+	 * TEST #10
+	 * val1_1 \ val2_2 = resultat
+	 * [1, 2] \ [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test10() throws IOException {
+<span class="nc" id="L446">		System.out.println(&quot;TEST #10: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L450">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L451">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L453">			myListActual_ = listeChainee_.build(difference_, val1_1, val2_2);</span>
+<span class="nc" id="L454">		}</span>
+<span class="nc" id="L455">		catch (final Throwable t)  {</span>
+<span class="nc" id="L456">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L457">			fail(&quot;Erreur test 10. &quot;);</span>
+		}
+<span class="nc" id="L459">	}</span>
+	
+	/*
+	 * TEST #11
+	 * val1_1 ∆ val2_2 = resultat
+	 * [1, 2] ∆ [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test11() throws IOException {
+<span class="nc" id="L468">		System.out.println(&quot;TEST #11: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L472">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L473">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L475">			myListActual_ = listeChainee_.build(symmetricDifference_, val1_1, val2_2);</span>
+<span class="nc" id="L476">		}</span>
+<span class="nc" id="L477">		catch (final Throwable t)  {</span>
+<span class="nc" id="L478">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L479">			fail(&quot;Erreur test 11. &quot;);</span>
+		}
+<span class="nc" id="L481">	}</span>
+	
+	/*
+	 * TEST #12
+	 * val1_1 ⊆ val2_2 = resultat
+	 * [1, 2] ⊆ [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test12() throws IOException {
+<span class="nc" id="L490">		System.out.println(&quot;TEST #12: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L494">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L495">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L497">			myListActual_ = listeChainee_.build(isSubset_, val1_1, val2_2);</span>
+<span class="nc" id="L498">		}</span>
+<span class="nc" id="L499">		catch (final Throwable t)  {</span>
+<span class="nc" id="L500">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L501">			fail(&quot;Erreur test 12. &quot;);</span>
+		}
+<span class="nc" id="L503">	}</span>
+	
+	/*
+	 * TEST #13
+	 * val1_1 ⊇ val2_2 = resultat
+	 * [1, 2] ⊇ [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test13() throws IOException {		
+<span class="nc" id="L512">		System.out.println(&quot;TEST #13: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L516">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L517">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L519">			myListActual_ = listeChainee_.build(isSuperset_, val1_1, val2_2);</span>
+<span class="nc" id="L520">		}</span>
+<span class="nc" id="L521">		catch (final Throwable t)  {</span>
+<span class="nc" id="L522">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L523">			fail(&quot;Erreur test 13. &quot;);</span>
+		}
+<span class="nc" id="L525">	}</span>
+	
+	/*
+	 * TEST #14
+	 * val1_1 &quot;op_invalid&quot; val2_2 = resultat
+	 * [1, 2] &quot;op_invalid&quot; [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test14() throws IOException {
+<span class="nc" id="L534">		System.out.println(&quot;TEST #14: &quot;);</span>
+
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L538">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="nc" id="L539">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L541">			myListActual_ = listeChainee_.build(invalidOp_, val1_1, val2_2);</span>
+<span class="nc" id="L542">		} </span>
+<span class="nc" id="L543">		catch (final Throwable t)  {</span>
+<span class="nc" id="L544">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L545">			fail(&quot;Erreur test 14. &quot;);</span>
+		}
+<span class="nc" id="L547">	}</span>
+	
+	/*
+	 * TEST #15
+	 * val1_2 ∪ val2_1 = resultat
+	 * [a, b] ∪ [1, 2] = ERREUR (Expected)
+	 */
+	@Test
+	public void test15() throws IOException {
+<span class="nc" id="L556">		System.out.println(&quot;TEST #15: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L560">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L561">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+			
+<span class="nc" id="L563">			myListActual_ = listeChainee_.build(union_, val1_2, val2_1);</span>
+<span class="nc" id="L564">		}</span>
+<span class="nc" id="L565">		catch (final Throwable t)  {</span>
+<span class="nc" id="L566">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L567">			fail(&quot;Erreur test 15. &quot;);</span>
+		}
+<span class="nc" id="L569">	}</span>
+	
+	/*
+	 * TEST #16
+	 * val1_2 ∩ val2_1 = resultat
+	 * [a, b] ∩ [1, 2] = ERREUR (Expected)d)
+	 */
+	@Test
+	public void test16() throws IOException {
+<span class="nc" id="L578">		System.out.println(&quot;TEST #16: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L582">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L583">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+			
+<span class="nc" id="L585">			myListActual_ = listeChainee_.build(intersection_, val1_2, val2_1);</span>
+<span class="nc" id="L586">		}</span>
+<span class="nc" id="L587">		catch (final Throwable t)  {</span>
+<span class="nc" id="L588">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L589">			fail(&quot;Erreur test 16. &quot;);</span>
+		}
+<span class="nc" id="L591">	}</span>
+	
+	/*
+	 * TEST #17
+	 * val1_2 \ val2_1 = resultat
+	 * [a, b] \ [1, 2] = ERREUR (Expected)
+	 */
+	@Test
+	public void test17() throws IOException {
+<span class="nc" id="L600">		System.out.println(&quot;TEST #17: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L604">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L605">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+			
+<span class="nc" id="L607">			myListActual_ = listeChainee_.build(difference_, val1_2, val2_1);</span>
+<span class="nc" id="L608">		}</span>
+<span class="nc" id="L609">		catch (final Throwable t)  {</span>
+<span class="nc" id="L610">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L611">			fail(&quot;Erreur test 17. &quot;);</span>
+		}
+<span class="nc" id="L613">	}</span>
+	
+	/*
+	 * TEST #18
+	 * val1_2 ∆ val2_1 = resultat
+	 * [a, b] ∆ [1, 2] = ERREUR (Expected)
+	 */
+	@Test
+	public void test18() throws IOException {
+<span class="nc" id="L622">		System.out.println(&quot;TEST #18: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L626">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L627">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+			
+<span class="nc" id="L629">			myListActual_ = listeChainee_.build(symmetricDifference_, val1_2, val2_1);</span>
+<span class="nc" id="L630">		}</span>
+<span class="nc" id="L631">		catch (final Throwable t)  {</span>
+<span class="nc" id="L632">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L633">			fail(&quot;Erreur test 18. &quot;);</span>
+		}
+<span class="nc" id="L635">	}</span>
+	
+	/*
+	 * TEST #19
+	 * val1_2 ⊆ val2_1 = resultat
+	 * [a, b] ⊆ [1, 2] = ERREUR (Expected)
+	 */
+	@Test
+	public void test19() throws IOException {
+<span class="nc" id="L644">		System.out.println(&quot;TEST #19: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L648">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L649">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+			
+<span class="nc" id="L651">			myListActual_ = listeChainee_.build(isSubset_, val1_2, val2_1);</span>
+<span class="nc" id="L652">		}</span>
+<span class="nc" id="L653">		catch (final Throwable t)  {</span>
+<span class="nc" id="L654">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L655">			fail(&quot;Erreur test 19. &quot;);</span>
+		}
+<span class="nc" id="L657">	}</span>
+	
+	/*
+	 * TEST #20
+	 * val1_2 ⊇ val2_1 = resultat
+	 * [a, b] ⊇ [1, 2] = ERREUR (Expected)
+	 */
+	@Test
+	public void test20() throws IOException {
+<span class="nc" id="L666">		System.out.println(&quot;TEST #20: &quot;);</span>
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L669">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L670">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+			
+<span class="nc" id="L672">			myListActual_ = listeChainee_.build(isSuperset_, val1_2, val2_1);</span>
+<span class="nc" id="L673">		}</span>
+<span class="nc" id="L674">		catch (final Throwable t)  {</span>
+<span class="nc" id="L675">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L676">			fail(&quot;Erreur test 20. &quot;);</span>
+		}
+<span class="nc" id="L678">	}</span>
+	
+	/*
+	 * TEST #21
+	 * val1_2 &quot;op_invalid&quot; val2_1 = resultat
+	 * [a, b] &quot;op_invalid&quot; [1, 2] = ERREUR (Expected)
+	 */
+	@Test
+	public void test21() throws IOException {
+<span class="nc" id="L687">		System.out.println(&quot;TEST #21: &quot;);</span>
+
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L691">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L692">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+			
+<span class="nc" id="L694">			myListActual_ = listeChainee_.build(invalidOp_, val1_2, val2_1);</span>
+<span class="nc" id="L695">		}</span>
+<span class="nc" id="L696">		catch (final Throwable t)  {</span>
+<span class="nc" id="L697">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L698">			fail(&quot;Erreur test 21. &quot;);</span>
+		}
+<span class="nc" id="L700">	}</span>
+	
+	/*
+	 * TEST #22
+	 * val1_2 ∪ val2_2 = resultat
+	 * [a, b] ∪ [a, b] = ERREUR (Expected))
+	 */
+	@Test
+	public void test22() throws IOException {
+<span class="nc" id="L709">		System.out.println(&quot;TEST #22: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L713">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L714">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L716">			myListActual_ = listeChainee_.build(union_, val1_2, val2_2);</span>
+<span class="nc" id="L717">		}</span>
+<span class="nc" id="L718">		catch (final Throwable t)  {</span>
+<span class="nc" id="L719">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L720">			fail(&quot;Erreur test 22. &quot;);</span>
+		}
+<span class="nc" id="L722">	}</span>
+	
+	/*
+	 * TEST #23
+	 * val1_2 ∩ val2_2 = resultat
+	 * [a, b] ∩ [a, b] = ERREUR (Expected))
+	 */
+	@Test
+	public void test23() throws IOException {
+<span class="nc" id="L731">		System.out.println(&quot;TEST #23: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L735">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L736">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L738">			myListActual_ = listeChainee_.build(intersection_, val1_2, val2_2);</span>
+<span class="nc" id="L739">		}</span>
+<span class="nc" id="L740">		catch (final Throwable t)  {</span>
+<span class="nc" id="L741">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L742">			fail(&quot;Erreur test 23. &quot;);</span>
+		}
+<span class="nc" id="L744">	}</span>
+	
+	/*
+	 * TEST #24
+	 * val1_2 \ val2_2 = resultat
+	 * [a, b] \ [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test24() throws IOException {
+<span class="nc" id="L753">		System.out.println(&quot;TEST #24: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L757">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L758">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L760">			myListActual_ = listeChainee_.build(difference_, val1_2, val2_2);</span>
+<span class="nc" id="L761">		}</span>
+<span class="nc" id="L762">		catch (final Throwable t)  {</span>
+<span class="nc" id="L763">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L764">			fail(&quot;Erreur test 24. &quot;);</span>
+		}
+<span class="nc" id="L766">	}</span>
+	
+	/*
+	 * TEST #25
+	 * val1_2 ∆ val2_2 = resultat
+	 * [a, b] ∆ [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test25() throws IOException {
+<span class="nc" id="L775">		System.out.println(&quot;TEST #25: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L779">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L780">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L782">			myListActual_ = listeChainee_.build(symmetricDifference_, val1_2, val2_2);</span>
+<span class="nc" id="L783">		}</span>
+<span class="nc" id="L784">		catch (final Throwable t)  {</span>
+<span class="nc" id="L785">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L786">			fail(&quot;Erreur test 25. &quot;);</span>
+		}
+<span class="nc" id="L788">	}</span>
+	
+	/*
+	 * TEST #26
+	 * val1_2 ⊆ val2_2 = resultat
+	 * [a, b] ⊆ [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test26() throws IOException {
+<span class="nc" id="L797">		System.out.println(&quot;TEST #26: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L801">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L802">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L804">			myListActual_ = listeChainee_.build(isSubset_, val1_2, val2_2);</span>
+<span class="nc" id="L805">		}</span>
+<span class="nc" id="L806">		catch (final Throwable t)  {</span>
+<span class="nc" id="L807">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L808">			fail(&quot;Erreur test 26. &quot;);</span>
+		};
+<span class="nc" id="L810">	}</span>
+	
+	/*
+	 * TEST #27
+	 * val1_1 ⊇ val2_2 = resultat
+	 * [1, 2] ⊇ [a, b] = ERREUR (Expected))
+	 */
+	@Test
+	public void test27() throws IOException {
+<span class="nc" id="L819">		System.out.println(&quot;TEST #27: &quot;);</span>
+		
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L823">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L824">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L826">			myListActual_ = listeChainee_.build(isSuperset_, val1_2, val2_2);</span>
+<span class="nc" id="L827">		}</span>
+<span class="nc" id="L828">		catch (final Throwable t)  {</span>
+<span class="nc" id="L829">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L830">			fail(&quot;Erreur test 27. &quot;);</span>
+		}
+<span class="nc" id="L832">	}</span>
+	
+	/*
+	 * TEST #28
+	 * val1_2 &quot;op_invalid&quot; val2_2 = resultat
+	 * [a, b] &quot;op_invalid&quot; [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test28() throws IOException {
+<span class="nc" id="L841">		System.out.println(&quot;TEST #28: &quot;);</span>
+
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="nc" id="L845">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L846">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+			
+<span class="nc" id="L848">			myListActual_ = listeChainee_.build(invalidOp_, val1_2, val2_2);</span>
+<span class="nc" id="L849">		}</span>
+<span class="nc" id="L850">		catch (final Throwable t)  {</span>
+<span class="nc" id="L851">			System.out.println(&quot;[Erreur détecté]&quot; + &quot;\n&quot;);</span>
+<span class="nc" id="L852">			fail(&quot;Erreur test 28. &quot;);</span>
+		}
+<span class="nc" id="L854">	}</span>
+	
+	/*
+	 * Cette fonction vérifie si une liste contient d'autres éléments que des Integer.
+	*/
+	public Boolean containOnlyInteger(ArrayList&lt;Object&gt; list)
+	{
+<span class="nc bnc" id="L861" title="All 2 branches missed.">		for(int i = 0; i &lt; list.size(); i++){</span>
+<span class="nc bnc" id="L862" title="All 2 branches missed.">			if (!(list.get(i) instanceof Integer))</span>
+			{
+<span class="nc" id="L864">				System.out.println(&quot;La liste ne contient pas juste des Integer.&quot;);</span>
+<span class="nc" id="L865">				return false;</span>
+			}
+		}
+<span class="nc" id="L868">		return true;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>ListeChaineeTestEC (14-Feb-2018 11:33:18 PM)</div></body></html>

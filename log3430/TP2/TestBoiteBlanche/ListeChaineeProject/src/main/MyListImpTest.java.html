@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MyListImpTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">ListeChaineeTestEC (14-Feb-2018 11:14:04 PM)</a> &gt; <a href="../../index.html" class="el_group">ListeChaineeProject</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main</a> &gt; <span class="el_source">MyListImpTest.java</span></div><h1>MyListImpTest.java</h1><pre class="source lang-java linenums">package main;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import org.junit.Test;
+
+<span class="nc" id="L9">public class MyListImpTest {</span>
+
+	/*
+	 * Test de la fonction removeAt(Index)
+	 * CAS DE TEST #1
+	 * Test: Taille de la liste �gale � 3
+	 * 		 removeAt(2) OK
+	 * 		 removeAt(1) OK
+	 */
+	 //Cas size &gt; pos &gt; 0
+	@Test
+	public void testRemoveAt12() {
+
+<span class="nc" id="L22">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L23">		firstObj.add(1);</span>
+<span class="nc" id="L24">		firstObj.add(2);</span>
+
+<span class="nc" id="L26">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L27">		secondObj.add(3);</span>
+<span class="nc" id="L28">		secondObj.add(4);</span>
+
+<span class="nc" id="L30">		ArrayList&lt;Object&gt; thirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L31">		thirdObj.add(5);</span>
+<span class="nc" id="L32">		thirdObj.add(6);</span>
+
+<span class="nc" id="L34">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L35">		myListImpl.add(firstObj);</span>
+<span class="nc" id="L36">		myListImpl.add(secondObj);</span>
+<span class="nc" id="L37">		myListImpl.add(thirdObj);</span>
+
+<span class="nc" id="L39">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L40">		assertEquals(&quot;Les tailles sont egales&quot; ,3, myListImpl.getSize());</span>
+
+<span class="nc" id="L42">		myListImpl.removeAt(2);</span>
+
+<span class="nc" id="L44">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+<span class="nc" id="L45">		System.out.println(&quot;SizeOf the array apres supression&quot; + myListImpl.getSize());</span>
+
+<span class="nc" id="L47">		System.out.println(&quot;Le contenu est &quot; + myListImpl.getAt(0));</span>
+<span class="nc" id="L48">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+<span class="nc" id="L49">		System.out.println(&quot;Le contenu est &quot; + myListImpl.getAt(1));</span>
+<span class="nc" id="L50">		System.out.println(&quot;Le contenu de thirdObj est &quot; + secondObj);</span>
+<span class="nc" id="L51">		assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(1));</span>
+
+<span class="nc" id="L53">		myListImpl.removeAt(1);</span>
+<span class="nc" id="L54">		System.out.println(&quot;SizeOf the array apres supression&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L55">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="nc" id="L56">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+<span class="nc" id="L58">	}</span>
+
+	/*
+	* Test de la fonction removeAt(Index)
+	* CAS DE TEST #2
+	 * Test: Taille de la liste �gale � 3
+	 * 		 removeAt(0) OK
+	 */
+	 //Cas pos == 0
+	@Test
+	public void testFuncRemoveAt0() {
+
+<span class="nc" id="L70">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L71">		firstObj.add(1);</span>
+<span class="nc" id="L72">		firstObj.add(2);</span>
+
+<span class="nc" id="L74">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L75">		secondObj.add(3);</span>
+<span class="nc" id="L76">		secondObj.add(4);</span>
+
+<span class="nc" id="L78">		ArrayList&lt;Object&gt; thirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L79">		thirdObj.add(5);</span>
+<span class="nc" id="L80">		thirdObj.add(6);</span>
+
+<span class="nc" id="L82">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L83">		myListImpl.add(firstObj);</span>
+<span class="nc" id="L84">		myListImpl.add(secondObj);</span>
+<span class="nc" id="L85">		myListImpl.add(thirdObj);</span>
+
+<span class="nc" id="L87">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L88">		assertEquals(&quot;Les tailles sont egales&quot; ,3, myListImpl.getSize());</span>
+
+<span class="nc" id="L90">		myListImpl.removeAt(0);</span>
+<span class="nc" id="L91">		System.out.println(&quot;SizeOf the array apres supression&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L92">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+
+<span class="nc" id="L94">	}</span>
+
+	/*
+	 * Test de la fonction removeAt(Index)
+	 * CAS DE TEST #3
+	 * Test: Taille de la liste �gale � 3
+	 * 		 removeAt(3) ERROR Out Of range
+	 */
+	 //Cas size &lt; pos
+	@Test
+	public void testFuncRemoveAtOutOfRange() {
+
+<span class="nc" id="L106">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L107">		firstObj.add(1);</span>
+<span class="nc" id="L108">		firstObj.add(2);</span>
+
+<span class="nc" id="L110">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L111">		secondObj.add(3);</span>
+<span class="nc" id="L112">		secondObj.add(4);</span>
+
+<span class="nc" id="L114">		ArrayList&lt;Object&gt; thirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L115">		thirdObj.add(5);</span>
+<span class="nc" id="L116">		thirdObj.add(6);</span>
+
+<span class="nc" id="L118">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L119">		myListImpl.add(firstObj);</span>
+<span class="nc" id="L120">		myListImpl.add(secondObj);</span>
+<span class="nc" id="L121">		myListImpl.add(thirdObj);</span>
+
+		try {
+<span class="nc" id="L124">			myListImpl.removeAt(3);</span>
+<span class="nc" id="L125">		}</span>
+<span class="nc" id="L126">		catch(Exception e)</span>
+		{
+<span class="nc" id="L128">			fail(&quot;Out of Range&quot;);</span>
+		}
+
+<span class="nc" id="L131">	}</span>
+
+
+	/*
+	 * Test de la fonction reset()
+	 * CAS DE TEST #1
+	 * Test: Taille de la liste �gale � 1
+	 * 		 Apr�s l'appel de la fonction reset() la taille �gale � 0
+	 */
+	@Test
+	public void testReset() {
+
+<span class="nc" id="L143">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L144">		firstObj.add(1);</span>
+<span class="nc" id="L145">		firstObj.add(2);</span>
+
+<span class="nc" id="L147">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L148">		myListImpl.add(firstObj);</span>
+
+<span class="nc" id="L150">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L151">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+
+<span class="nc" id="L153">		myListImpl.reset();</span>
+<span class="nc" id="L154">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L155">		assertEquals(&quot;Les tailles sont egales&quot; ,0, myListImpl.getSize());</span>
+
+<span class="nc" id="L157">	}</span>
+
+	/*
+	 * Test de la fonction setAt()
+	 * CAS DE TEST #1
+	 * Test: Taille de la liste �gale � 3
+	 * 		 setAt(obj, 1) OK
+	 * 		 setAt(obj, 2) OK
+	 *     0 &lt; pos &lt; size()
+	 */
+	@Test
+	public void testSetAt12() {
+
+<span class="nc" id="L170">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L171">		firstObj.add(1);</span>
+<span class="nc" id="L172">		firstObj.add(2);</span>
+
+<span class="nc" id="L174">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L175">		secondObj.add(3);</span>
+<span class="nc" id="L176">		secondObj.add(4);</span>
+
+<span class="nc" id="L178">		ArrayList&lt;Object&gt; thirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L179">		secondObj.add(4);</span>
+<span class="nc" id="L180">		secondObj.add(5);</span>
+
+<span class="nc" id="L182">		ArrayList&lt;Object&gt; replaceFirstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L183">		replaceFirstObj.add(6);</span>
+<span class="nc" id="L184">		replaceFirstObj.add(7);</span>
+
+<span class="nc" id="L186">		ArrayList&lt;Object&gt; replaceSecondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L187">		replaceFirstObj.add(8);</span>
+<span class="nc" id="L188">		replaceFirstObj.add(9);</span>
+
+<span class="nc" id="L190">		ArrayList&lt;Object&gt; replaceThirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L191">		replaceFirstObj.add(10);</span>
+<span class="nc" id="L192">		replaceFirstObj.add(11);</span>
+
+<span class="nc" id="L194">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L195">		myListImpl.add(firstObj);</span>
+<span class="nc" id="L196">		myListImpl.add(secondObj);</span>
+<span class="nc" id="L197">		myListImpl.add(thirdObj);</span>
+
+<span class="nc" id="L199">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L200">		assertEquals(&quot;Les tailles sont egales&quot; ,3, myListImpl.getSize());</span>
+<span class="nc" id="L201">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+<span class="nc" id="L203">		myListImpl.setAt(replaceSecondObj,1);</span>
+<span class="nc" id="L204">		assertEquals(&quot;Le contenu est pareil &quot;, replaceSecondObj, myListImpl.getAt(1));</span>
+
+<span class="nc" id="L206">		myListImpl.setAt(replaceThirdObj,2);</span>
+<span class="nc" id="L207">		assertEquals(&quot;Le contenu est pareil &quot;, replaceThirdObj, myListImpl.getAt(2));</span>
+<span class="nc" id="L208">	}</span>
+
+	/*
+	 * Test de la fonction setAt()
+	 * CAS DE TEST #2
+	 * Test: Taille de la liste �gale � 1
+	 * 		 setAt(obj, 0) OK
+	 *     0 == pos
+	 */
+	@Test
+	public void testSetAt0() {
+
+<span class="nc" id="L220">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L221">		firstObj.add(1);</span>
+<span class="nc" id="L222">		firstObj.add(2);</span>
+
+<span class="nc" id="L224">		ArrayList&lt;Object&gt; replaceFirstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L225">		replaceFirstObj.add(6);</span>
+<span class="nc" id="L226">		replaceFirstObj.add(7);</span>
+
+<span class="nc" id="L228">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L229">		myListImpl.add(firstObj);</span>
+
+<span class="nc" id="L231">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L232">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="nc" id="L233">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+<span class="nc" id="L235">		myListImpl.setAt(replaceFirstObj,0);</span>
+<span class="nc" id="L236">		assertEquals(&quot;Le contenu est pareil &quot;, replaceFirstObj, myListImpl.getAt(0));</span>
+<span class="nc" id="L237">	}</span>
+
+	/*
+	 * Test de la fonction setAt2()
+	 * CAS DE TEST #3
+	 * Test: Taille de la liste �gale � 1
+	 * 		 setAt(obj, 2) OK
+	 *     size() &lt; pos
+	 */
+	@Test
+	public void testSetAtOutOfRange() {
+
+<span class="nc" id="L249">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L250">		firstObj.add(1);</span>
+<span class="nc" id="L251">		firstObj.add(2);</span>
+
+<span class="nc" id="L253">		ArrayList&lt;Object&gt; replaceFirstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L254">		replaceFirstObj.add(6);</span>
+<span class="nc" id="L255">		replaceFirstObj.add(7);</span>
+
+<span class="nc" id="L257">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L258">		myListImpl.add(firstObj);</span>
+
+<span class="nc" id="L260">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L261">		assertEquals(&quot;Les tailles sont egales&quot;, 1, myListImpl.getSize());</span>
+<span class="nc" id="L262">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+		// Out Of Range
+		try {
+<span class="nc" id="L266">			myListImpl.setAt(replaceFirstObj,2);</span>
+<span class="nc" id="L267">			assertEquals(&quot;Le contenu est pareil &quot;, replaceFirstObj, myListImpl.getAt(2));</span>
+<span class="nc" id="L268">		}</span>
+<span class="nc" id="L269">		catch(Exception e)</span>
+		{
+<span class="nc" id="L271">			fail(&quot;Out of range&quot;);</span>
+		}
+<span class="nc" id="L273">	}</span>
+
+	/*
+	 * Test de la fonction getAt()
+	 * CAS DE TEST #1
+	 * Test: Taille de la liste �gale � 1
+	 * 		 getAt(0) OK
+	 *     pos == 0
+	 */
+	@Test
+	public void testGetAt0() {
+
+<span class="nc" id="L285">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L286">		firstObj.add(1);</span>
+<span class="nc" id="L287">		firstObj.add(2);</span>
+
+<span class="nc" id="L289">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L290">		myListImpl.add(firstObj);</span>
+
+<span class="nc" id="L292">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L293">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="nc" id="L294">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+<span class="nc" id="L295">	}</span>
+
+	/*
+	 * Test de la fonction getAt()
+	 * CAS DE TEST #2
+	 * Test: Taille de la liste �gale � 2
+	 * 		 getAt(1) OK
+	 * 		 0 &lt; pos &lt; size()
+	 */
+	@Test
+	public void testGetAt1() {
+
+<span class="nc" id="L307">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L308">		firstObj.add(1);</span>
+<span class="nc" id="L309">		firstObj.add(2);</span>
+
+
+<span class="nc" id="L312">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L313">		secondObj.add(2);</span>
+<span class="nc" id="L314">		secondObj.add(3);</span>
+
+<span class="nc" id="L316">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L317">		myListImpl.add(firstObj);</span>
+<span class="nc" id="L318">		myListImpl.add(secondObj);</span>
+
+<span class="nc" id="L320">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L321">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+<span class="nc" id="L322">		assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(1));</span>
+<span class="nc" id="L323">	}</span>
+
+	/*
+	 * Test de la fonction getAt()
+	 * CAS DE TEST #3
+	 * Test: Taille de la liste �gale � 2
+	 * 		 getAt(2) ERROR Out of Range
+	 *     pos &gt; size()
+	 */
+	@Test
+	public void testGetAt2() {
+
+<span class="nc" id="L335">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L336">		firstObj.add(1);</span>
+<span class="nc" id="L337">		firstObj.add(2);</span>
+
+
+<span class="nc" id="L340">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L341">		secondObj.add(2);</span>
+<span class="nc" id="L342">		secondObj.add(3);</span>
+
+<span class="nc" id="L344">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L345">		myListImpl.add(firstObj);</span>
+<span class="nc" id="L346">		myListImpl.add(secondObj);</span>
+
+<span class="nc" id="L348">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L349">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+
+		try {
+<span class="nc" id="L352">			assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(2));</span>
+<span class="nc" id="L353">		}</span>
+<span class="nc" id="L354">		catch(Exception e)</span>
+		{
+<span class="nc" id="L356">			fail(&quot;Out Of Range&quot;);</span>
+		}
+
+<span class="nc" id="L359">	}</span>
+
+	/*
+	 * Test de la fonction removeItem()
+	 * CAS DE TEST #1 
+	 * Test: Taille de la liste �gale � 1
+	 * 		 removeItem(existedObject) OK
+	 */
+	@Test
+	public void testRemoveAtFirst() {
+
+<span class="nc" id="L370">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L371">		firstObj.add(1);</span>
+<span class="nc" id="L372">		firstObj.add(2);</span>
+
+<span class="nc" id="L374">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L375">		myListImpl.add(firstObj);</span>
+
+<span class="nc" id="L377">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L378">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="nc" id="L379">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+		try {
+<span class="nc" id="L382">			myListImpl.removeItem(firstObj);</span>
+<span class="nc" id="L383">		}</span>
+<span class="nc" id="L384">		catch(Exception e)</span>
+		{
+<span class="nc" id="L386">			fail(&quot;Out Of Range&quot;);</span>
+		}
+<span class="nc" id="L388">	}</span>
+	
+	/*
+	 * Test de la fonction removeItem()
+	 * CAS DE TEST #2  
+	 * Test: Taille de la liste �gale � 2
+	 * 		 removeItem(secondePosition) OK
+	 */
+	@Test
+	public void testRemoveItemSecondPos() {
+
+<span class="nc" id="L399">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L400">		firstObj.add(1);</span>
+<span class="nc" id="L401">		firstObj.add(2);</span>
+
+<span class="nc" id="L403">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L404">		secondObj.add(7);</span>
+<span class="nc" id="L405">		secondObj.add(2);</span>
+
+<span class="nc" id="L407">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L408">		myListImpl.add(firstObj);</span>
+<span class="nc" id="L409">		myListImpl.add(secondObj);</span>
+
+<span class="nc" id="L411">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L412">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+<span class="nc" id="L413">		assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(1));</span>
+
+		try {
+<span class="nc" id="L416">			myListImpl.removeItem(secondObj);</span>
+<span class="nc" id="L417">		}</span>
+<span class="nc" id="L418">		catch(Exception e)</span>
+		{
+<span class="nc" id="L420">			 fail(&quot;Out Of Range&quot;);</span>
+		}
+<span class="nc" id="L422">	}</span>
+
+	/*
+	 * Test de la fonction removeItem()
+	 * CAS DE TEST #3   
+	 * Test: Taille de la liste �gale � 1
+	 * 		 removeItem(NotexistedObject) ERROR NOTexistedObject
+	 */
+	@Test
+	public void testRemoveItemNotExisted() {
+
+<span class="nc" id="L433">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L434">		firstObj.add(1);</span>
+<span class="nc" id="L435">		firstObj.add(2);</span>
+
+<span class="nc" id="L437">		ArrayList&lt;Object&gt; notAddedObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L438">		firstObj.add(5);</span>
+<span class="nc" id="L439">		firstObj.add(6);</span>
+
+<span class="nc" id="L441">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L442">		myListImpl.add(firstObj);</span>
+
+<span class="nc" id="L444">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L445">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="nc" id="L446">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+		try {
+<span class="nc" id="L449">			myListImpl.removeItem(notAddedObj);</span>
+<span class="nc" id="L450">		}</span>
+<span class="nc" id="L451">		catch(Exception e)</span>
+		{
+<span class="nc" id="L453">			 fail(&quot;Out Of Range&quot;);</span>
+		}
+<span class="nc" id="L455">	}</span>
+	
+	/*
+	 * Test de la fonction testAddFirst()
+	 * CAS DE TEST #1   
+	 * Test: Taille de la liste �gale � 1
+	 * 		 add(fistObject) Ok
+	 */
+	@Test
+	public void testAddFirst() {
+
+<span class="nc" id="L466">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L467">		firstObj.add(1);</span>
+<span class="nc" id="L468">		firstObj.add(2);</span>
+
+<span class="nc" id="L470">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L471">		myListImpl.add(firstObj);</span>
+
+<span class="nc" id="L473">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="nc" id="L474">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="nc" id="L475">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+		
+<span class="nc" id="L477">	}</span>
+	
+	/*
+	 * Test de la fonction testAddSecond()
+	 * CAS DE TEST #2   
+	 * Test: Taille de la liste �gale � 2
+	 * 		 add(secondObject) Ok
+	 */
+	@Test
+	public void testAddSecond() {
+
+<span class="nc" id="L488">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L489">		firstObj.add(1);</span>
+<span class="nc" id="L490">		firstObj.add(2);</span>
+		
+<span class="nc" id="L492">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L493">		secondObj.add(5);</span>
+<span class="nc" id="L494">		secondObj.add(6);</span>
+
+<span class="nc" id="L496">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="nc" id="L497">		myListImpl.add(firstObj);</span>
+<span class="nc" id="L498">		myListImpl.add(secondObj);</span>
+
+<span class="nc" id="L500">		assertEquals(&quot;Les tailles sont egales&quot; ,2 , myListImpl.getSize());</span>
+<span class="nc" id="L501">		assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(1));</span>
+		
+<span class="nc" id="L503">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>ListeChaineeTestEC (14-Feb-2018 11:14:04 PM)</div></body></html>

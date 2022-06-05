@@ -1,0 +1,835 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TP</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-09-29"><meta name="DC.source" content="TP.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Exercice 1 (2 points): Signaux simples</a></li><li><a href="#2">Exercice 2 (4 points): &Eacute;chantillonnage</a></li><li><a href="#3">Exercice 3 (5 points): Analyse spectrale</a></li><li><a href="#4">Exercice 4 (9 points): Filtrage audio</a></li></ul></div><h2 id="1">Exercice 1 (2 points): Signaux simples</h2><pre class="codeinput"><span class="comment">% Nettoyage du workspace</span>
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+clc;
+
+<span class="comment">% D&eacute;finition des variables</span>
+X = [0:pi/13:7*pi];
+Y = @(x) sin(x);
+C = @(x) ones(size(x))*2.8;
+B = @(x) sqrt(0.4).*randn(size(x)) + 0.1;
+
+<span class="comment">% Question 1. (1 point)</span>
+Z = @(x) Y(x) + C(x) + B(x);
+
+<span class="comment">% R&eacute;ponses affich&eacute;es &agrave; l'&eacute;cran</span>
+moyenne = mean(Z(X)) <span class="comment">% moyenne = 3,0839</span>
+variance = var(Z(X)) <span class="comment">% variance = 0,9057</span>
+
+<span class="comment">% Question 2. (1 point)</span>
+hold <span class="string">on</span>;
+plot(X, Y(X), <span class="string">'r'</span>);
+plot(X, C(X), <span class="string">'g'</span>);
+plot(X, B(X), <span class="string">'b'</span>);
+plot(X, Z(X), <span class="string">'m'</span>);
+xlim([0 20]);
+
+<span class="comment">% Peaufinage du graphique</span>
+grid <span class="string">on</span>;
+title(<span class="string">"Exercice 1: Signaux simples"</span>);
+xlabel(<span class="string">"Temps (secondes)"</span>);
+ylabel(<span class="string">"Signal"</span>);
+legend(<span class="string">"Y(X)"</span>, <span class="string">"C(X)"</span>, <span class="string">"B(X)"</span>, <span class="string">"Z(X)"</span>);
+</pre><pre class="codeoutput">
+moyenne =
+
+    3.0252
+
+
+variance =
+
+    0.7090
+
+</pre><img vspace="5" hspace="5" src="TP_01.png" alt=""> <h2 id="2">Exercice 2 (4 points): &Eacute;chantillonnage</h2><pre class="codeinput"><span class="comment">% Nettoyage du workspace</span>
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+clc;
+
+<span class="comment">% Signal analogique Y(t)</span>
+Y = @(t) 2*sin(165*pi*t) + 13*cos(6*pi*t) - 3*cos(80*pi*t);
+
+<span class="comment">% Question 1. (0.5 point)</span>
+<span class="comment">% Les 3 termes de l'&eacute;quation repr&eacute;sentent les signaux ind&eacute;pendants.</span>
+<span class="comment">% Les signaux ont des p&eacute;riodes (T) de 165*pi, 6*pi et 80*pi, respectivement.</span>
+<span class="comment">% Leur fr&eacute;quence (f) est donc d&eacute;termin&eacute;e par la formule T = 2*pi*f.</span>
+<span class="comment">% Nous avons donc des fr&eacute;quences de 82.5 Hz, 3 Hz et 40 Hz.</span>
+
+<span class="comment">% Question 2. (1.5 points)</span>
+X_20hz  = [0:(1/20):1];
+X_75hz  = [0:(1/75):1];
+X_100hz = [0:(1/100):1];
+X_160hz = [0:(1/160):1];
+X_180hz = [0:(1/180):1];
+X_330hz = [0:(1/330):1];
+
+<span class="comment">% Tableau 1/6: 20 Hz</span>
+subplot(3,2,1);
+plot(X_20hz, Y(X_20hz), <span class="string">'k'</span>);
+xlabel(<span class="string">"Temps (secondes)"</span>);
+ylabel(<span class="string">"Signal"</span>);
+title(<span class="string">"Exercice 2: 20 Hz"</span>);
+ylim([-20 20])
+grid <span class="string">on</span>;
+
+<span class="comment">% Tableau 2/6: 75 Hz</span>
+subplot(3,2,2);
+plot(X_75hz, Y(X_75hz), <span class="string">'m'</span>);
+xlabel(<span class="string">"Temps (secondes)"</span>);
+ylabel(<span class="string">"Signal"</span>);
+title(<span class="string">"Exercice 2: 75 Hz"</span>);
+ylim([-20 20])
+grid <span class="string">on</span>;
+
+<span class="comment">% Tableau 3/6: 100 Hz</span>
+subplot(3,2,3);
+plot(X_100hz, Y(X_100hz), <span class="string">'c'</span>);
+xlabel(<span class="string">"Temps (secondes)"</span>);
+ylabel(<span class="string">"Signal"</span>);
+title(<span class="string">"Exercice 2: 100 Hz"</span>);
+ylim([-20 20])
+grid <span class="string">on</span>;
+
+<span class="comment">% Tableau 4/6: 160 Hz</span>
+subplot(3,2,4);
+plot(X_160hz, Y(X_160hz), <span class="string">'r'</span>);
+xlabel(<span class="string">"Temps (secondes)"</span>);
+ylabel(<span class="string">"Signal"</span>);
+title(<span class="string">"Exercice 2: 160 Hz"</span>);
+ylim([-20 20])
+grid <span class="string">on</span>;
+
+<span class="comment">% Tableau 5/6: 180 Hz</span>
+subplot(3,2,5);
+plot(X_180hz, Y(X_180hz), <span class="string">'g'</span>);
+xlabel(<span class="string">"Temps (secondes)"</span>);
+ylabel(<span class="string">"Signal"</span>);
+title(<span class="string">"Exercice 2: 180 Hz"</span>);
+ylim([-20 20])
+grid <span class="string">on</span>;
+
+<span class="comment">% Tableau 6/6: 330 Hz</span>
+subplot(3,2,6);
+plot(X_330hz, Y(X_330hz), <span class="string">'b'</span>);
+xlabel(<span class="string">"Temps (secondes)"</span>);
+ylabel(<span class="string">"Signal"</span>);
+title(<span class="string">"Exercice 2: 330 Hz"</span>);
+ylim([-20 20])
+grid <span class="string">on</span>;
+
+<span class="comment">% Question 3. (1 point)</span>
+<span class="comment">% Nous remarquons que plus la fr&eacute;quence d'&eacute;chantillonnage est &eacute;lev&eacute;e, plus</span>
+<span class="comment">% la forme du signal est pr&eacute;cise et se rapproche du signal analogique.</span>
+
+<span class="comment">% Question 4. (1 point)</span>
+<span class="comment">% Selon le th&eacute;or&egrave;me de Nyquist-Shannon, la fr&eacute;quence d'&eacute;chantillonnage</span>
+<span class="comment">% minimale acceptable est &eacute;gale au double de la plus grande fr&eacute;quence</span>
+<span class="comment">% pr&eacute;sente dans le signal.</span>
+<span class="comment">%</span>
+<span class="comment">% Dans notre cas, puisque la plus grande fr&eacute;quence est de 82.5 Hz, il faut</span>
+<span class="comment">% choisir une fr&eacute;quence d'&eacute;chantillonnage plus grande ou &eacute;gale &agrave; 165 Hz.</span>
+<span class="comment">%</span>
+<span class="comment">% Les fr&eacute;quences d'&eacute;chantillonnage de l'exercice 2 qui satisfont le</span>
+<span class="comment">% th&eacute;or&egrave;me sont donc celui de 180 Hz et 330 Hz. La plus optimale est tout</span>
+<span class="comment">% de m&ecirc;me celle de 330 Hz.</span>
+</pre><img vspace="5" hspace="5" src="TP_02.png" alt=""> <h2 id="3">Exercice 3 (5 points): Analyse spectrale</h2><pre class="codeinput"><span class="comment">% Nettoyage du workspace</span>
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+clc;
+
+<span class="comment">% Question 1. (1 point)</span>
+Y1 = @(t) 5*sin(2*pi*4*t);
+Y2 = @(t) 3*sin(2*pi*45*t);
+Y3 = @(t) 2*sin(2*pi*70*t);
+T = [0:(1/250):0.25];
+
+<span class="comment">% Affichage des trois signaux</span>
+figure(1);
+hold <span class="string">on</span>;
+plot(T, Y1(T), <span class="string">'r'</span>);
+plot(T, Y2(T), <span class="string">'g'</span>);
+plot(T, Y3(T), <span class="string">'b'</span>);
+
+<span class="comment">% Peaufinage du graphique</span>
+grid <span class="string">on</span>;
+title(<span class="string">"Exercice 3: Analyse spectrale (Question 1)"</span>);
+xlabel(<span class="string">"Temps (secondes)"</span>);
+ylabel(<span class="string">"Signal"</span>);
+legend(<span class="string">"Y1(t)"</span>, <span class="string">"Y2(t)"</span>, <span class="string">"Y3(t)"</span>);
+
+<span class="comment">% Question 2. (0.5 point)</span>
+<span class="comment">% P&eacute;riodes:</span>
+<span class="comment">%   Y1(t): 1/(1/0,25) = 1/4</span>
+<span class="comment">%   Y2(t): 1/(11,25/0,25) = 1/45</span>
+<span class="comment">%   Y3(t): 1/(17,5/0,25) = 1/70</span>
+
+<span class="comment">% Question 3. (0.5 point)</span>
+Z = @(t) Y1(t) + Y2(t) + Y3(t);
+T_extended = [0:(1/250):1]; <span class="comment">% Pour voir la tendance &agrave; plus grand &eacute;chelle</span>
+
+<span class="comment">% Affichage de la somme des trois signaux</span>
+figure(2);
+plot(T_extended, Z(T_extended), <span class="string">'m'</span>);
+grid <span class="string">on</span>;
+title(<span class="string">"Exercice 3: Analyse spectrale (Question 3)"</span>);
+xlabel(<span class="string">"Temps (secondes)"</span>);
+ylabel(<span class="string">"Signal"</span>);
+
+<span class="comment">% P&eacute;riode graphique: 1/(4/1) = 1/4</span>
+<span class="comment">% P&eacute;riode analytique: 1/4</span>
+
+<span class="comment">% Question 4. (2 points)</span>
+<span class="comment">% En suivant l'exemple ici:</span>
+<span class="comment">% https://www.mathworks.com/help/matlab/ref/fft.html?requestedDomain=www.mathworks.com</span>
+Fe = 250;            <span class="comment">% Fr&eacute;quence d'&eacute;chantillonage</span>
+t = [-0.5:1/Fe:0.5]; <span class="comment">% Vecteur temps</span>
+L = length(t);       <span class="comment">% Longueur du signal</span>
+n = 2^nextpow2(L);   <span class="comment">% "This will pad the signal X with trailing zeros in order to improve the performance of fft."</span>
+f = Fe*(0:(n/2))/n;  <span class="comment">% "Define the frequency domain."</span>
+
+<span class="comment">% TFD des trois signaux</span>
+Y1_fft = fft(Y1(t),n);
+P1 = abs(Y1_fft/n);
+Y2_fft = fft(Y2(t),n);
+P2 = abs(Y2_fft/n);
+Y3_fft = fft(Y3(t),n);
+P3 = abs(Y3_fft/n);
+
+<span class="comment">% Affichage des trois TFD</span>
+figure(3);
+hold <span class="string">on</span>;
+plot(f,P1(1:n/2+1), <span class="string">'r'</span>);
+plot(f,P2(1:n/2+1), <span class="string">'g'</span>);
+plot(f,P3(1:n/2+1), <span class="string">'b'</span>);
+
+<span class="comment">% Peaufinage du graphique</span>
+grid <span class="string">on</span>;
+title(<span class="string">"Exercice 3: Analyse spectrale (Question 4)"</span>);
+xlabel(<span class="string">"Fr&eacute;quences (Hz)"</span>);
+ylabel(<span class="string">"Amplitude (dB)"</span>);
+legend(<span class="string">"fft(Y1(t))"</span>, <span class="string">"fft(Y2(t))"</span>, <span class="string">"fft(Y3(t))"</span>);
+
+<span class="comment">% On remarque que les pics de chacune des fonction repr&eacute;sente la fr&eacute;quence</span>
+<span class="comment">% des signaux, soit 4, 45 et 70</span>
+
+<span class="comment">% Question 5. (1 point)</span>
+<span class="comment">% TFD de la somme des trois signaux</span>
+Z_fft = fft(Z(t),n);
+Pz = abs(Z_fft/n);
+
+<span class="comment">% Affichage de la TDF de la somme des trois signaux</span>
+figure(4);
+plot(f,Pz(1:n/2+1), <span class="string">'m'</span>);
+
+<span class="comment">% Peaufinage du graphique</span>
+grid <span class="string">on</span>;
+title(<span class="string">"Exercice 3: Analyse spectrale (Question 5)"</span>);
+xlabel(<span class="string">"Fr&eacute;quences (Hz)"</span>);
+ylabel(<span class="string">"Amplitude (dB)"</span>);
+
+<span class="comment">% On remarque que le r&eacute;sultat est le m&ecirc;me; La FFT d'un signal affiche les</span>
+<span class="comment">% fr&eacute;quences pr&eacute;sentes et affiche donc les fr&eacute;quences additionn&eacute;es de Z.</span>
+</pre><img vspace="5" hspace="5" src="TP_03.png" alt=""> <img vspace="5" hspace="5" src="TP_04.png" alt=""> <img vspace="5" hspace="5" src="TP_05.png" alt=""> <img vspace="5" hspace="5" src="TP_06.png" alt=""> <h2 id="4">Exercice 4 (9 points): Filtrage audio</h2><pre class="codeinput"><span class="comment">% Nettoyage du workspace</span>
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+clc;
+
+<span class="comment">% Question 1. (1 point)</span>
+[Data, Fe] = audioread(<span class="string">'audio.wav'</span>);
+son_original = audioplayer(Data, Fe);
+
+<span class="comment">% Valeurs n&eacute;cessaires au calcul de TFD</span>
+L = numel(Data);    <span class="comment">% Longueur du signal</span>
+n = 2^nextpow2(L);   <span class="comment">% "This will pad the signal X with trailing zeros in order to improve the performance of fft."</span>
+f = Fe*(0:(n/2))/n;  <span class="comment">% "Define the frequency domain."</span>
+
+<span class="comment">% Question 2. (0,5 point)</span>
+<span class="comment">% TFD du signal original (Data)</span>
+audio_fft = fft(Data,n);
+P = abs(audio_fft/n);
+
+<span class="comment">% Affichage des TFD du signal original</span>
+figure(1);
+subplot(2,1,1);
+plot(f,P(1:n/2+1), <span class="string">'r'</span>);
+grid <span class="string">on</span>;
+title(<span class="string">"Exercice 4: Filtrage audio (Question 1)"</span>);
+xlabel(<span class="string">"Fr&eacute;quences (Hz)"</span>);
+ylabel(<span class="string">"Amplitude (dB)"</span>);
+
+<span class="comment">% Bonus: Zoom sur le pic &agrave; identifier avec la plus haute fr&eacute;quence</span>
+subplot(2,1,2);
+plot(f,P(1:n/2+1), <span class="string">'r'</span>);
+xlim([1240,1250]); <span class="comment">% Les valeurs ont &eacute;t&eacute; d&eacute;termin&eacute;es par essai erreur avec le premier graphique de la figure 1.</span>
+grid <span class="string">on</span>;
+title(<span class="string">"Zoom sur le 2e pic de bruit (plus haute fr&eacute;quence)"</span>);
+xlabel(<span class="string">"Fr&eacute;quences (Hz)"</span>);
+ylabel(<span class="string">"Amplitude (dB)"</span>);
+
+
+<span class="comment">% Question 3. (0.5 point)</span>
+<span class="comment">% La note de bruit de plus haute fr&eacute;quence se situe entre 1244 et 1245,</span>
+<span class="comment">% selon le 3e graphique affich&eacute; au num&eacute;ro 2. Le tableau de wikipedia</span>
+<span class="comment">% fourni dans l'&eacute;nonc&eacute; situe la note r&eacute;# &agrave; la fr&eacute;quence 1244.51 Hz!</span>
+
+<span class="comment">% Question 4. (1 point)</span>
+<span class="comment">% Source: https://www.mathworks.com/help/signal/ref/fir1.html</span>
+b = fir1(128,(Fe/2)/1244.51/100);
+y = filter(b, 1, Data);
+
+<span class="comment">% Cr&eacute;ation du son avec le filtre passe-bas.</span>
+son_low_filter = audioplayer(y, Fe);
+y_fft = fft(y);
+Py = abs(y_fft/n);
+
+<span class="comment">% Affichage du TFD du signal avec le filtre passe-bas</span>
+figure(2);
+plot(f,Py(1:n/2+1), <span class="string">'b'</span>);
+xlim([0,1250]);
+grid <span class="string">on</span>;
+title(<span class="string">"Signal apr&egrave;s filtre passe-bas"</span>);
+xlabel(<span class="string">"Fr&eacute;quences (Hz)"</span>);
+ylabel(<span class="string">"Amplitude (dB)"</span>);
+
+<span class="comment">% Question 5. (1 point)</span>
+
+<span class="comment">% Cr&eacute;ation des filtres passe-haut</span>
+bhi_cheby = fir1(128, 250/(Fe/2), <span class="string">'high'</span>, chebwin(129,30)); <span class="comment">% Chebyshev</span>
+bhi_hammi = fir1(128,  250/(Fe/2), <span class="string">'high'</span>); <span class="comment">% Hamming</span>
+bhi_black = fir1(128,  250/(Fe/2), <span class="string">'high'</span>, blackman(129)); <span class="comment">% Blackman</span>
+
+<span class="comment">% Question 6. (1.5 points)</span>
+
+<span class="comment">% Affichage en commun des trois filtres.</span>
+dfilt_dffir_cheby = dfilt.dffir(bhi_cheby);
+dfilt_dffir_hammi = dfilt.dffir(bhi_hammi);
+dfilt_dffir_black = dfilt.dffir(bhi_black);
+freqz([dfilt_dffir_cheby, dfilt_dffir_hammi, dfilt_dffir_black]);
+
+<span class="comment">% Question 7. (1.5 points)</span>
+
+<span class="comment">% filtrer</span>
+z1 = filter(bhi_cheby, 1, y);
+z2 = filter(bhi_hammi, 1, y);
+z3 = filter(bhi_black, 1, y);
+
+<span class="comment">% Cr&eacute;ation des diff&eacute;rents sons avec les filtres</span>
+son_cheby = audioplayer(z1, Fe);
+son_hammi = audioplayer(z2, Fe);
+son_black = audioplayer(z3, Fe);
+
+<span class="comment">% En ordre (1 &agrave; 5, meilleur au pire):</span>
+<span class="comment">% 1. son_cheby:      Son avec le filtre passe-bas et Chebyshev</span>
+<span class="comment">% 2. son_hammi:      Son avec le filtre passe-bas et Hamming</span>
+<span class="comment">% 3. son_black:      Son avec le filtre passe-bas et Blackman</span>
+<span class="comment">% 4. son_low_filter: Son avec le filtre passe-bas seulement</span>
+<span class="comment">% 5. son_original:   Son original sans filtre</span>
+<span class="comment">%</span>
+<span class="comment">% Lorsqu'on &eacute;coute les trois signaux, on remarque que chacun att&eacute;nue le</span>
+<span class="comment">% bruit fort &agrave; basse fr&eacute;quence. Cependant, plus le bruit est att&eacute;nu&eacute;, plus</span>
+<span class="comment">% le reste de la m&eacute;lodie l'est aussi. On pense que le filtre de Chebyshev</span>
+<span class="comment">% est le meilleur, r&eacute;ussissant &agrave; retirer presque compl&egrave;tement le son, mais</span>
+<span class="comment">% la m&eacute;lodie sonne beaucoup plus faible aussi. Le filtre de hamming</span>
+<span class="comment">% ressemble beaucoup au filtre de Blackman, mais ce dernier semble &ecirc;tre un</span>
+<span class="comment">% peu moins bon.</span>
+<span class="comment">%</span>
+<span class="comment">% Plus la fr&eacute;quence de coupure utilis&eacute;e est haute, plus on perd la qualit&eacute;</span>
+<span class="comment">% du signal, puisqu'on laisse passer moins de fr&eacute;quences.</span>
+
+<span class="comment">% Question 8. (2 points)</span>
+z1_fft = fft(z1);
+Pz1 = abs(z1_fft/n);
+z2_fft = fft(z2);
+Pz2 = abs(z2_fft/n);
+z3_fft = fft(z3);
+Pz3 = abs(z3_fft/n);
+
+<span class="comment">% Affichage des TFD des diff&eacute;rents filtres</span>
+figure(3);
+
+<span class="comment">% TFD du filtre de Chebyshev</span>
+subplot(3,1,1);
+plot(f,Pz1(1:n/2+1), <span class="string">'r'</span>);
+grid <span class="string">on</span>;
+title(<span class="string">"Exercice 4: filtre Chebyshev (Question 8)"</span>);
+xlabel(<span class="string">"Fr&eacute;quences (Hz)"</span>);
+ylabel(<span class="string">"Amplitude (dB)"</span>);
+xlim([0,800]);
+
+<span class="comment">% TFD du filtre de Hamming</span>
+subplot(3,1,2);
+plot(f,Pz2(1:n/2+1), <span class="string">'g'</span>);
+grid <span class="string">on</span>;
+title(<span class="string">"Exercice 4: filtre Hamming (Question 8)"</span>);
+xlabel(<span class="string">"Fr&eacute;quences (Hz)"</span>);
+ylabel(<span class="string">"Amplitude (dB)"</span>);
+xlim([0,800]);
+
+<span class="comment">% TFD du filtre de Blackman</span>
+subplot(3,1,3);
+plot(f,Pz3(1:n/2+1), <span class="string">'b'</span>);
+grid <span class="string">on</span>;
+title(<span class="string">"Exercice 4: filtre Blackman (Question 8)"</span>);
+xlabel(<span class="string">"Fr&eacute;quences (Hz)"</span>);
+ylabel(<span class="string">"Amplitude (dB)"</span>);
+xlim([0,800]);
+
+<span class="comment">% Avec les graphiques de la figure 4, nous pouvons voir que nous avions</span>
+<span class="comment">% raison. Le filtre Cehbyshev est nettement meilleur, on peut voir que</span>
+<span class="comment">% l'axe des Y (Amplitude) atteint 2x10^(-3) dB, alors que le filtre</span>
+<span class="comment">% de Hamming et de Blackman atteigne respectivement 0,01 dB et 0,03 dB.</span>
+</pre><img vspace="5" hspace="5" src="TP_07.png" alt=""> <img vspace="5" hspace="5" src="TP_08.png" alt=""> <img vspace="5" hspace="5" src="TP_09.png" alt=""> <img vspace="5" hspace="5" src="TP_10.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Exercice 1 (2 points): Signaux simples
+
+% Nettoyage du workspace
+clear all;
+close all;
+clc;
+
+% Définition des variables
+X = [0:pi/13:7*pi];
+Y = @(x) sin(x);
+C = @(x) ones(size(x))*2.8;
+B = @(x) sqrt(0.4).*randn(size(x)) + 0.1;
+
+% Question 1. (1 point)
+Z = @(x) Y(x) + C(x) + B(x);
+
+% Réponses affichées à l'écran
+moyenne = mean(Z(X)) % moyenne = 3,0839
+variance = var(Z(X)) % variance = 0,9057
+
+% Question 2. (1 point)
+hold on;
+plot(X, Y(X), 'r');
+plot(X, C(X), 'g');
+plot(X, B(X), 'b');
+plot(X, Z(X), 'm');
+xlim([0 20]);
+
+% Peaufinage du graphique
+grid on;
+title("Exercice 1: Signaux simples");
+xlabel("Temps (secondes)");
+ylabel("Signal");
+legend("Y(X)", "C(X)", "B(X)", "Z(X)");
+
+
+%% Exercice 2 (4 points): Échantillonnage
+
+% Nettoyage du workspace
+clear all;
+close all;
+clc;
+
+% Signal analogique Y(t)
+Y = @(t) 2*sin(165*pi*t) + 13*cos(6*pi*t) - 3*cos(80*pi*t);
+
+% Question 1. (0.5 point)
+% Les 3 termes de l'équation représentent les signaux indépendants.
+% Les signaux ont des périodes (T) de 165*pi, 6*pi et 80*pi, respectivement.
+% Leur fréquence (f) est donc déterminée par la formule T = 2*pi*f.
+% Nous avons donc des fréquences de 82.5 Hz, 3 Hz et 40 Hz.
+
+% Question 2. (1.5 points)
+X_20hz  = [0:(1/20):1];
+X_75hz  = [0:(1/75):1];
+X_100hz = [0:(1/100):1];
+X_160hz = [0:(1/160):1];
+X_180hz = [0:(1/180):1];
+X_330hz = [0:(1/330):1];
+
+% Tableau 1/6: 20 Hz
+subplot(3,2,1);
+plot(X_20hz, Y(X_20hz), 'k');
+xlabel("Temps (secondes)");
+ylabel("Signal");
+title("Exercice 2: 20 Hz");
+ylim([-20 20])
+grid on;
+
+% Tableau 2/6: 75 Hz
+subplot(3,2,2);
+plot(X_75hz, Y(X_75hz), 'm');
+xlabel("Temps (secondes)");
+ylabel("Signal");
+title("Exercice 2: 75 Hz");
+ylim([-20 20])
+grid on;
+
+% Tableau 3/6: 100 Hz
+subplot(3,2,3);
+plot(X_100hz, Y(X_100hz), 'c');
+xlabel("Temps (secondes)");
+ylabel("Signal");
+title("Exercice 2: 100 Hz");
+ylim([-20 20])
+grid on;
+
+% Tableau 4/6: 160 Hz
+subplot(3,2,4);
+plot(X_160hz, Y(X_160hz), 'r');
+xlabel("Temps (secondes)");
+ylabel("Signal");
+title("Exercice 2: 160 Hz");
+ylim([-20 20])
+grid on;
+
+% Tableau 5/6: 180 Hz
+subplot(3,2,5);
+plot(X_180hz, Y(X_180hz), 'g');
+xlabel("Temps (secondes)");
+ylabel("Signal");
+title("Exercice 2: 180 Hz");
+ylim([-20 20])
+grid on;
+
+% Tableau 6/6: 330 Hz
+subplot(3,2,6);
+plot(X_330hz, Y(X_330hz), 'b');
+xlabel("Temps (secondes)");
+ylabel("Signal");
+title("Exercice 2: 330 Hz");
+ylim([-20 20])
+grid on;
+
+% Question 3. (1 point)
+% Nous remarquons que plus la fréquence d'échantillonnage est élevée, plus 
+% la forme du signal est précise et se rapproche du signal analogique.
+
+% Question 4. (1 point)
+% Selon le théorème de Nyquist-Shannon, la fréquence d'échantillonnage
+% minimale acceptable est égale au double de la plus grande fréquence 
+% présente dans le signal. 
+%
+% Dans notre cas, puisque la plus grande fréquence est de 82.5 Hz, il faut 
+% choisir une fréquence d'échantillonnage plus grande ou égale à 165 Hz.
+%
+% Les fréquences d'échantillonnage de l'exercice 2 qui satisfont le
+% théorème sont donc celui de 180 Hz et 330 Hz. La plus optimale est tout
+% de même celle de 330 Hz.
+
+
+%% Exercice 3 (5 points): Analyse spectrale
+
+% Nettoyage du workspace
+clear all;
+close all;
+clc;
+
+% Question 1. (1 point)
+Y1 = @(t) 5*sin(2*pi*4*t);
+Y2 = @(t) 3*sin(2*pi*45*t);
+Y3 = @(t) 2*sin(2*pi*70*t);
+T = [0:(1/250):0.25];
+
+% Affichage des trois signaux
+figure(1);
+hold on;
+plot(T, Y1(T), 'r');
+plot(T, Y2(T), 'g');
+plot(T, Y3(T), 'b');
+
+% Peaufinage du graphique
+grid on;
+title("Exercice 3: Analyse spectrale (Question 1)");
+xlabel("Temps (secondes)");
+ylabel("Signal");
+legend("Y1(t)", "Y2(t)", "Y3(t)");
+
+% Question 2. (0.5 point)
+% Périodes:
+%   Y1(t): 1/(1/0,25) = 1/4
+%   Y2(t): 1/(11,25/0,25) = 1/45
+%   Y3(t): 1/(17,5/0,25) = 1/70
+
+% Question 3. (0.5 point)
+Z = @(t) Y1(t) + Y2(t) + Y3(t);
+T_extended = [0:(1/250):1]; % Pour voir la tendance à plus grand échelle
+
+% Affichage de la somme des trois signaux
+figure(2);
+plot(T_extended, Z(T_extended), 'm');
+grid on;
+title("Exercice 3: Analyse spectrale (Question 3)");
+xlabel("Temps (secondes)");
+ylabel("Signal");
+
+% Période graphique: 1/(4/1) = 1/4
+% Période analytique: 1/4
+
+% Question 4. (2 points)
+% En suivant l'exemple ici: 
+% https://www.mathworks.com/help/matlab/ref/fft.html?requestedDomain=www.mathworks.com
+Fe = 250;            % Fréquence d'échantillonage
+t = [-0.5:1/Fe:0.5]; % Vecteur temps 
+L = length(t);       % Longueur du signal
+n = 2^nextpow2(L);   % "This will pad the signal X with trailing zeros in order to improve the performance of fft."
+f = Fe*(0:(n/2))/n;  % "Define the frequency domain."
+
+% TFD des trois signaux
+Y1_fft = fft(Y1(t),n);
+P1 = abs(Y1_fft/n);
+Y2_fft = fft(Y2(t),n);
+P2 = abs(Y2_fft/n);
+Y3_fft = fft(Y3(t),n);
+P3 = abs(Y3_fft/n);
+
+% Affichage des trois TFD
+figure(3);
+hold on;
+plot(f,P1(1:n/2+1), 'r');
+plot(f,P2(1:n/2+1), 'g');
+plot(f,P3(1:n/2+1), 'b');
+
+% Peaufinage du graphique
+grid on;
+title("Exercice 3: Analyse spectrale (Question 4)");
+xlabel("Fréquences (Hz)");
+ylabel("Amplitude (dB)");
+legend("fft(Y1(t))", "fft(Y2(t))", "fft(Y3(t))");
+
+% On remarque que les pics de chacune des fonction représente la fréquence
+% des signaux, soit 4, 45 et 70
+
+% Question 5. (1 point)
+% TFD de la somme des trois signaux
+Z_fft = fft(Z(t),n);
+Pz = abs(Z_fft/n);
+
+% Affichage de la TDF de la somme des trois signaux
+figure(4);
+plot(f,Pz(1:n/2+1), 'm');
+
+% Peaufinage du graphique
+grid on;
+title("Exercice 3: Analyse spectrale (Question 5)");
+xlabel("Fréquences (Hz)");
+ylabel("Amplitude (dB)");
+
+% On remarque que le résultat est le même; La FFT d'un signal affiche les
+% fréquences présentes et affiche donc les fréquences additionnées de Z.
+
+
+%% Exercice 4 (9 points): Filtrage audio
+
+% Nettoyage du workspace
+clear all;
+close all;
+clc;
+
+% Question 1. (1 point)
+[Data, Fe] = audioread('audio.wav');
+son_original = audioplayer(Data, Fe);
+
+% Valeurs nécessaires au calcul de TFD
+L = numel(Data);    % Longueur du signal   
+n = 2^nextpow2(L);   % "This will pad the signal X with trailing zeros in order to improve the performance of fft."
+f = Fe*(0:(n/2))/n;  % "Define the frequency domain."
+
+% Question 2. (0,5 point)
+% TFD du signal original (Data)
+audio_fft = fft(Data,n);
+P = abs(audio_fft/n);
+
+% Affichage des TFD du signal original
+figure(1);
+subplot(2,1,1);
+plot(f,P(1:n/2+1), 'r');
+grid on;
+title("Exercice 4: Filtrage audio (Question 1)");
+xlabel("Fréquences (Hz)");
+ylabel("Amplitude (dB)");
+
+% Bonus: Zoom sur le pic à identifier avec la plus haute fréquence
+subplot(2,1,2);
+plot(f,P(1:n/2+1), 'r');
+xlim([1240,1250]); % Les valeurs ont été déterminées par essai erreur avec le premier graphique de la figure 1.
+grid on;
+title("Zoom sur le 2e pic de bruit (plus haute fréquence)");
+xlabel("Fréquences (Hz)");
+ylabel("Amplitude (dB)");
+
+
+% Question 3. (0.5 point)
+% La note de bruit de plus haute fréquence se situe entre 1244 et 1245,
+% selon le 3e graphique affiché au numéro 2. Le tableau de wikipedia
+% fourni dans l'énoncé situe la note ré# à la fréquence 1244.51 Hz!
+
+% Question 4. (1 point)
+% Source: https://www.mathworks.com/help/signal/ref/fir1.html
+b = fir1(128,(Fe/2)/1244.51/100);
+y = filter(b, 1, Data);
+
+% Création du son avec le filtre passe-bas.
+son_low_filter = audioplayer(y, Fe);
+y_fft = fft(y);
+Py = abs(y_fft/n);
+
+% Affichage du TFD du signal avec le filtre passe-bas
+figure(2);
+plot(f,Py(1:n/2+1), 'b');
+xlim([0,1250]);
+grid on;
+title("Signal après filtre passe-bas");
+xlabel("Fréquences (Hz)");
+ylabel("Amplitude (dB)");
+
+% Question 5. (1 point)
+
+% Création des filtres passe-haut
+bhi_cheby = fir1(128, 250/(Fe/2), 'high', chebwin(129,30)); % Chebyshev
+bhi_hammi = fir1(128,  250/(Fe/2), 'high'); % Hamming
+bhi_black = fir1(128,  250/(Fe/2), 'high', blackman(129)); % Blackman
+
+% Question 6. (1.5 points)
+
+% Affichage en commun des trois filtres.
+dfilt_dffir_cheby = dfilt.dffir(bhi_cheby);
+dfilt_dffir_hammi = dfilt.dffir(bhi_hammi);
+dfilt_dffir_black = dfilt.dffir(bhi_black);
+freqz([dfilt_dffir_cheby, dfilt_dffir_hammi, dfilt_dffir_black]);
+
+% Question 7. (1.5 points)
+
+% filtrer
+z1 = filter(bhi_cheby, 1, y);
+z2 = filter(bhi_hammi, 1, y);
+z3 = filter(bhi_black, 1, y);
+
+% Création des différents sons avec les filtres
+son_cheby = audioplayer(z1, Fe);
+son_hammi = audioplayer(z2, Fe);
+son_black = audioplayer(z3, Fe);
+
+% En ordre (1 à 5, meilleur au pire):
+% 1. son_cheby:      Son avec le filtre passe-bas et Chebyshev
+% 2. son_hammi:      Son avec le filtre passe-bas et Hamming
+% 3. son_black:      Son avec le filtre passe-bas et Blackman
+% 4. son_low_filter: Son avec le filtre passe-bas seulement
+% 5. son_original:   Son original sans filtre
+%
+% Lorsqu'on écoute les trois signaux, on remarque que chacun atténue le
+% bruit fort à basse fréquence. Cependant, plus le bruit est atténué, plus
+% le reste de la mélodie l'est aussi. On pense que le filtre de Chebyshev
+% est le meilleur, réussissant à retirer presque complètement le son, mais
+% la mélodie sonne beaucoup plus faible aussi. Le filtre de hamming
+% ressemble beaucoup au filtre de Blackman, mais ce dernier semble être un
+% peu moins bon.
+%
+% Plus la fréquence de coupure utilisée est haute, plus on perd la qualité
+% du signal, puisqu'on laisse passer moins de fréquences.
+
+% Question 8. (2 points)
+z1_fft = fft(z1);
+Pz1 = abs(z1_fft/n);
+z2_fft = fft(z2);
+Pz2 = abs(z2_fft/n);
+z3_fft = fft(z3);
+Pz3 = abs(z3_fft/n);
+
+% Affichage des TFD des différents filtres
+figure(3);
+
+% TFD du filtre de Chebyshev
+subplot(3,1,1);
+plot(f,Pz1(1:n/2+1), 'r');
+grid on;
+title("Exercice 4: filtre Chebyshev (Question 8)");
+xlabel("Fréquences (Hz)");
+ylabel("Amplitude (dB)");
+xlim([0,800]);
+
+% TFD du filtre de Hamming
+subplot(3,1,2);
+plot(f,Pz2(1:n/2+1), 'g');
+grid on;
+title("Exercice 4: filtre Hamming (Question 8)");
+xlabel("Fréquences (Hz)");
+ylabel("Amplitude (dB)");
+xlim([0,800]);
+
+% TFD du filtre de Blackman
+subplot(3,1,3);
+plot(f,Pz3(1:n/2+1), 'b');
+grid on;
+title("Exercice 4: filtre Blackman (Question 8)");
+xlabel("Fréquences (Hz)");
+ylabel("Amplitude (dB)");
+xlim([0,800]);
+
+% Avec les graphiques de la figure 4, nous pouvons voir que nous avions
+% raison. Le filtre Cehbyshev est nettement meilleur, on peut voir que
+% l'axe des Y (Amplitude) atteint 2x10^(-3) dB, alors que le filtre
+% de Hamming et de Blackman atteigne respectivement 0,01 dB et 0,03 dB.
+
+##### SOURCE END #####
+--></body></html>

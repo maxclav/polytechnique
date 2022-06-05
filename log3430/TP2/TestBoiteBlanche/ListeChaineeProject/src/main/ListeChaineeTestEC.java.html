@@ -1,0 +1,901 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ListeChaineeTestEC.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">ListeChaineeTestEC (14-Feb-2018 11:14:04 PM)</a> &gt; <a href="../../index.html" class="el_group">ListeChaineeProject</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main</a> &gt; <span class="el_source">ListeChaineeTestEC.java</span></div><h1>ListeChaineeTestEC.java</h1><pre class="source lang-java linenums">package main;
+
+/**
+ * @class	ListeChaineeTestEC
+ * @author	maclab
+ *		Maxime Clavel			
+ *		Étudiant génie logiciel (concentration multimédia)
+ * 
+ * Date:	30 janvier 2018
+ * Cours:	Méthodes de test et de validation du logiciel (LOG3430)
+ * École:	Polytechnique Montréal
+ * 
+ * Informations:
+ * Cette classe test la classe ListeChainee.java
+ * en utilisant la technique de test boîte noire catégorie partition EC (Each Choice)
+ * et en utilisant le critère AC (All Combinations).
+ * ListeChainee prend en entrée 2 objets de type ArrayList et un objet de type String
+ * et retourne un objet de type MyList.
+ */
+
+import static org.junit.Assert.*;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import main.ListeChaineeImpl;
+import main.MyList;
+import main.MyListImpl;
+
+<span class="fc" id="L33">public class ListeChaineeTestEC {</span>
+	
+	private ListeChaineeImpl listeChainee_;
+	
+	private MyList myListExpected_;
+	
+	private MyList myListActual_;
+	ArrayList&lt;Object&gt; result;
+	
+	/* Attributs valides/invalides de val1 (2 valeurs possibles) */
+	private ArrayList&lt;Object&gt; val1_1;
+	private ArrayList&lt;Object&gt; val1_2;
+	
+	/* Attributs valides/invalides de val2 (2 valeurs possibles) */
+	private ArrayList&lt;Object&gt; val2_1;
+	private ArrayList&lt;Object&gt; val2_2;
+	
+	/* Attributs valides/invalides de &quot;op&quot; (7 valeurs possibles) */
+<span class="fc" id="L51">	final private String union_ = &quot;union&quot;;</span>
+<span class="fc" id="L52">	final private String intersection_ = &quot;intersection&quot;;</span>
+<span class="fc" id="L53">	final private String difference_ = &quot;difference&quot;;</span>
+<span class="fc" id="L54">	final private String symmetricDifference_ = &quot;symDifference&quot;;</span>
+<span class="fc" id="L55">	final private String isSubset_ = &quot;isSubset&quot;;</span>
+<span class="fc" id="L56">	final private String isSuperset_ = &quot;isSuperset&quot;;</span>
+<span class="fc" id="L57">	final private String invalidOp_ = &quot;opérateur_invalide&quot;;</span>
+	
+	// Pour les résultats
+	StringBuilder chaineContent;
+
+	@Before
+	public void setUp() throws Exception {
+		
+<span class="fc" id="L65">		listeChainee_ = new ListeChaineeImpl();</span>
+		
+<span class="fc" id="L67">		myListExpected_ = new MyListImpl();</span>
+		
+<span class="fc" id="L69">		myListActual_ = new MyListImpl();</span>
+<span class="fc" id="L70">		result = new ArrayList&lt;Object&gt;();</span>
+		
+<span class="fc" id="L72">		val1_1 = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L73">		val1_1.add(1);</span>
+<span class="fc" id="L74">		val1_1.add(2);</span>
+		
+<span class="fc" id="L76">		val1_2 = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L77">		val1_2.add(&quot;a&quot;);</span>
+<span class="fc" id="L78">		val1_2.add(&quot;b&quot;);</span>
+		
+<span class="fc" id="L80">		val2_1 = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L81">		val2_1.add(1);</span>
+<span class="fc" id="L82">		val2_1.add(3);</span>
+		
+<span class="fc" id="L84">		val2_2 = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L85">		val2_2.add(&quot;a&quot;);</span>
+<span class="fc" id="L86">		val2_2.add(&quot;b&quot;);</span>
+		
+<span class="fc" id="L88">		chaineContent = new StringBuilder();</span>
+<span class="fc" id="L89">	}</span>
+	
+	@After
+	public void tearDown() throws Exception {
+<span class="fc" id="L93">		myListExpected_.reset();</span>
+<span class="fc" id="L94">		myListActual_.reset();</span>
+<span class="fc" id="L95">		result.clear();</span>
+<span class="fc" id="L96">		chaineContent.setLength(0);</span>
+<span class="fc" id="L97">	}</span>
+
+	/*
+	 * TEST #1
+	 * val1_1 ∪ val2_1 = resultat
+	 * [1, 2] ∪ [1, 3] = [1, 2, 3] (Expected)
+	 */
+	@Test
+	public void test1() {	
+<span class="fc" id="L106">		System.out.println(&quot;TEST #1: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="fc" id="L109">		result.add(1);</span>
+<span class="fc" id="L110">		result.add(2);</span>
+<span class="fc" id="L111">		result.add(3);</span>
+		
+<span class="fc" id="L113">		myListExpected_.add(val1_1);</span>
+<span class="fc" id="L114">		myListExpected_.add(val2_1);</span>
+<span class="fc" id="L115">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="fc" id="L118">			myListActual_ = listeChainee_.build(union_, val1_1, val2_1);</span>
+<span class="pc" id="L119">		} catch (Exception e) {</span>
+<span class="nc" id="L120">			fail(&quot;Erreur test 1&quot;);</span>
+		}
+		
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="fc" id="L124">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="fc" id="L126">		System.out.println(chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="fc" id="L129">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="fc" id="L132">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="fc" id="L135">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="fc" id="L138">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="fc" id="L142">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="fc" id="L143">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="fc" id="L144">	}</span>
+	
+	/*
+	 * TEST #2
+	 * val1_1 ∩ val2_1 = resultat
+	 * [1, 2] ∩ [1, 3] = [1] (Expected)
+	 */
+	@Test
+	public void test2() {	
+<span class="fc" id="L153">		System.out.println(&quot;TEST #2: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="fc" id="L156">		result.add(1);</span>
+		
+<span class="fc" id="L158">		myListExpected_.add(val1_1);</span>
+<span class="fc" id="L159">		myListExpected_.add(val2_1);</span>
+<span class="fc" id="L160">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="fc" id="L163">			myListActual_ = listeChainee_.build(intersection_, val1_1, val2_1);</span>
+<span class="pc" id="L164">		} catch (IOException e) {</span>
+<span class="nc" id="L165">			fail(&quot;Erreur test 2&quot;);</span>
+		}
+		
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="fc" id="L169">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="fc" id="L171">		System.out.println(chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="fc" id="L174">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="fc" id="L177">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="fc" id="L180">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="fc" id="L183">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="fc" id="L186">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="fc" id="L187">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="fc" id="L188">	}</span>
+	
+	/*
+	 * TEST #3
+	 * val1_1 \ val2_1 = resultat
+	 * [1, 2] \ [1, 3] = [2] (Expected)
+	 */
+	@Test
+	public void test3() {	
+<span class="fc" id="L197">		System.out.println(&quot;TEST #3: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="fc" id="L200">		result.add(2);</span>
+		
+<span class="fc" id="L202">		myListExpected_.add(val1_1);</span>
+<span class="fc" id="L203">		myListExpected_.add(val2_1);</span>
+<span class="fc" id="L204">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="fc" id="L207">			myListActual_ = listeChainee_.build(difference_, val1_1, val2_1);</span>
+<span class="pc" id="L208">		} catch (IOException e) {</span>
+<span class="nc" id="L209">			fail(&quot;Erreur test 3&quot;);</span>
+		}
+		
+<span class="fc bfc" id="L212" title="All 2 branches covered.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="fc" id="L213">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="fc" id="L215">		System.out.println(chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="fc" id="L218">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="fc" id="L221">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="fc" id="L224">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="fc" id="L227">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="fc" id="L230">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="fc" id="L231">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="fc" id="L232">	}</span>
+	
+	/*
+	 * TEST #4
+	 * val1_1 ∆ val2_1 = resultat
+	 * [1, 2] ∆ [1, 3] = [2, 3] (Expected)
+	 */
+	@Test
+	public void test4() {	
+<span class="fc" id="L241">		System.out.println(&quot;TEST #4: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="fc" id="L244">		result.add(2);</span>
+<span class="fc" id="L245">		result.add(3);</span>
+		
+<span class="fc" id="L247">		myListExpected_.add(val1_1);</span>
+<span class="fc" id="L248">		myListExpected_.add(val2_1);</span>
+<span class="fc" id="L249">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="fc" id="L252">			myListActual_ = listeChainee_.build(symmetricDifference_, val1_1, val2_1);</span>
+<span class="pc" id="L253">		} catch (IOException e) {</span>
+<span class="nc" id="L254">			fail(&quot;Erreur test 4&quot;);</span>
+		}
+		
+<span class="fc bfc" id="L257" title="All 2 branches covered.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="fc" id="L258">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="fc" id="L260">		System.out.println(chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="fc" id="L263">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="fc" id="L266">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="fc" id="L269">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="fc" id="L272">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="fc" id="L275">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="fc" id="L276">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="fc" id="L277">	}</span>
+	
+	/*
+	 * TEST #5
+	 * val1_1 ⊆ val2_1 = resultat
+	 * [1, 2] ⊆ [1, 3] = false (Expected)
+	 */
+	@Test
+	public void test5() {	
+<span class="fc" id="L286">		System.out.println(&quot;TEST #5: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="fc" id="L289">		result.add(&quot;false&quot;);</span>
+		
+<span class="fc" id="L291">		myListExpected_.add(val1_1);</span>
+<span class="fc" id="L292">		myListExpected_.add(val2_1);</span>
+<span class="fc" id="L293">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="fc" id="L296">			myListActual_ = listeChainee_.build(isSubset_, val1_1, val2_1);</span>
+<span class="pc" id="L297">		} catch (IOException e) {</span>
+<span class="nc" id="L298">			fail(&quot;Erreur test 5&quot;);</span>
+		}
+		
+<span class="fc bfc" id="L301" title="All 2 branches covered.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="fc" id="L302">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="fc" id="L304">		System.out.println(chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="fc" id="L307">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="fc" id="L310">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="fc" id="L313">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="fc" id="L316">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="fc" id="L319">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="fc" id="L320">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="fc" id="L321">	}</span>
+	
+	/*
+	 * TEST #6
+	 * val1_1 ⊇ val2_1 = resultat
+	 * [1, 2] ⊇ [1, 3] = false (Expected)
+	 */
+	@Test
+	public void test6() {	
+<span class="fc" id="L330">		System.out.println(&quot;TEST #6: &quot;);</span>
+		
+		/* Création du résultat expecté */
+<span class="fc" id="L333">		result.add(&quot;false&quot;);</span>
+		
+<span class="fc" id="L335">		myListExpected_.add(val1_1);</span>
+<span class="fc" id="L336">		myListExpected_.add(val2_1);</span>
+<span class="fc" id="L337">		myListExpected_.add(result);</span>
+		
+		try {
+<span class="fc" id="L340">			myListActual_ = listeChainee_.build(isSuperset_, val1_1, val2_1);</span>
+<span class="pc" id="L341">		} catch (IOException e) {</span>
+<span class="nc" id="L342">			fail(&quot;Erreur test 6&quot;);</span>
+		}
+		
+<span class="fc bfc" id="L345" title="All 2 branches covered.">		for(int i = 0; i &lt; myListExpected_.getSize(); i++){</span>
+<span class="fc" id="L346">			chaineContent.append(&quot; &quot; + myListExpected_.getAt(i));</span>
+		}	
+<span class="fc" id="L348">		System.out.println(chaineContent + &quot;\n&quot;);</span>
+		
+		/* Test sur la taille des deux listes. */
+<span class="fc" id="L351">		assertEquals(&quot;Erreur test1: Taille de la liste&quot;, myListExpected_.getSize(), myListActual_.getSize());</span>
+		
+		/* Test du premier élément des deux listes */
+<span class="fc" id="L354">		assertEquals(&quot;Erreur test1: Premier élément pas bon (val1).&quot;, myListExpected_.getAt(0), myListActual_.getAt(0));</span>
+		
+		/* Test du deuxième élément des deux listes */
+<span class="fc" id="L357">		assertEquals(&quot;Erreur test1: Deuxième élément pas bon (val2).&quot;, myListExpected_.getAt(1), myListActual_.getAt(1));</span>
+		
+		/* Test du troisième élément des deux listes */
+<span class="fc" id="L360">		assertEquals(&quot;Erreur test1: Troisième élément pas bon (resultat).&quot;, myListExpected_.getAt(2), myListActual_.getAt(2));</span>
+		
+		// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="fc" id="L363">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_1));</span>
+<span class="fc" id="L364">		assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_1));</span>
+<span class="fc" id="L365">	}</span>
+	
+	/*
+	 * TEST #7
+	 * val1_2 &quot;op_invalid&quot; val2_2 = resultat
+	 * [a, b] &quot;op_invalid&quot; [a, b] = ERREUR (Expected)
+	 */
+	@Test
+	public void test7() {	
+		
+<span class="fc" id="L375">		System.out.println(&quot;TEST #7: &quot;);</span>
+
+		try {
+			// Vérifie que les ensembles ne contiennent que des Integer.
+<span class="fc" id="L379">			myListActual_ = listeChainee_.build(invalidOp_, val1_2, val2_2);</span>
+<span class="nc" id="L380">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val1_2));</span>
+<span class="nc" id="L381">			assertTrue(&quot;Erreur&quot;,this.containOnlyInteger(val2_2));</span>
+<span class="nc" id="L382">		}</span>
+
+<span class="nc" id="L384">		catch (Exception exception) {</span>
+<span class="nc" id="L385">			exception.printStackTrace();</span>
+		}
+<span class="nc" id="L387">	}</span>
+	
+	/*
+	 * Cette fonction vérifie si une liste contient d'autres éléments que des Integer.
+	*/
+	public Boolean containOnlyInteger(ArrayList&lt;Object&gt; list)
+	{
+<span class="fc bfc" id="L394" title="All 2 branches covered.">		for(int i = 0; i &lt; list.size(); i++){</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">			if (!(list.get(i) instanceof Integer))</span>
+			{
+<span class="fc" id="L397">				System.out.println(&quot;La liste ne contient pas juste des Integer.&quot;);</span>
+<span class="fc" id="L398">				return false;</span>
+			}
+		}
+<span class="fc" id="L401">		return true;</span>
+	}
+	
+	
+	/*
+	 * Test de la fonction removeAt(Index)
+	 * CAS DE TEST #1
+	 * Test: Taille de la liste �gale � 3
+	 * 		 removeAt(2) OK
+	 * 		 removeAt(1) OK
+	 */
+	 //Cas size &gt; pos &gt; 0
+	@Test
+	public void testRemoveAt12() {
+
+<span class="fc" id="L416">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L417">		firstObj.add(1);</span>
+<span class="fc" id="L418">		firstObj.add(2);</span>
+
+<span class="fc" id="L420">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L421">		secondObj.add(3);</span>
+<span class="fc" id="L422">		secondObj.add(4);</span>
+
+<span class="fc" id="L424">		ArrayList&lt;Object&gt; thirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L425">		thirdObj.add(5);</span>
+<span class="fc" id="L426">		thirdObj.add(6);</span>
+
+<span class="fc" id="L428">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L429">		myListImpl.add(firstObj);</span>
+<span class="fc" id="L430">		myListImpl.add(secondObj);</span>
+<span class="fc" id="L431">		myListImpl.add(thirdObj);</span>
+
+<span class="fc" id="L433">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L434">		assertEquals(&quot;Les tailles sont egales&quot; ,3, myListImpl.getSize());</span>
+
+<span class="fc" id="L436">		myListImpl.removeAt(2);</span>
+
+<span class="fc" id="L438">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+<span class="fc" id="L439">		System.out.println(&quot;SizeOf the array apres supression&quot; + myListImpl.getSize());</span>
+
+<span class="fc" id="L441">		System.out.println(&quot;Le contenu est &quot; + myListImpl.getAt(0));</span>
+<span class="fc" id="L442">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+<span class="fc" id="L443">		System.out.println(&quot;Le contenu est &quot; + myListImpl.getAt(1));</span>
+<span class="fc" id="L444">		System.out.println(&quot;Le contenu de thirdObj est &quot; + secondObj);</span>
+<span class="fc" id="L445">		assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(1));</span>
+
+<span class="fc" id="L447">		myListImpl.removeAt(1);</span>
+<span class="fc" id="L448">		System.out.println(&quot;SizeOf the array apres supression&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L449">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="fc" id="L450">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+<span class="fc" id="L452">	}</span>
+
+	/*
+	* Test de la fonction removeAt(Index)
+	* CAS DE TEST #2
+	 * Test: Taille de la liste �gale � 3
+	 * 		 removeAt(0) OK
+	 */
+	 //Cas pos == 0
+	@Test
+	public void testFuncRemoveAt0() {
+
+<span class="fc" id="L464">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L465">		firstObj.add(1);</span>
+<span class="fc" id="L466">		firstObj.add(2);</span>
+
+<span class="fc" id="L468">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L469">		secondObj.add(3);</span>
+<span class="fc" id="L470">		secondObj.add(4);</span>
+
+<span class="fc" id="L472">		ArrayList&lt;Object&gt; thirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L473">		thirdObj.add(5);</span>
+<span class="fc" id="L474">		thirdObj.add(6);</span>
+
+<span class="fc" id="L476">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L477">		myListImpl.add(firstObj);</span>
+<span class="fc" id="L478">		myListImpl.add(secondObj);</span>
+<span class="fc" id="L479">		myListImpl.add(thirdObj);</span>
+
+<span class="fc" id="L481">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L482">		assertEquals(&quot;Les tailles sont egales&quot; ,3, myListImpl.getSize());</span>
+
+<span class="fc" id="L484">		myListImpl.removeAt(0);</span>
+<span class="fc" id="L485">		System.out.println(&quot;SizeOf the array apres supression&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L486">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+
+<span class="fc" id="L488">	}</span>
+
+	/*
+	 * Test de la fonction removeAt(Index)
+	 * CAS DE TEST #3
+	 * Test: Taille de la liste �gale � 3
+	 * 		 removeAt(3) ERROR Out Of range
+	 */
+	 //Cas size &lt; pos
+	@Test
+	public void testFuncRemoveAtOutOfRange() {
+
+<span class="fc" id="L500">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L501">		firstObj.add(1);</span>
+<span class="fc" id="L502">		firstObj.add(2);</span>
+
+<span class="fc" id="L504">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L505">		secondObj.add(3);</span>
+<span class="fc" id="L506">		secondObj.add(4);</span>
+
+<span class="fc" id="L508">		ArrayList&lt;Object&gt; thirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L509">		thirdObj.add(5);</span>
+<span class="fc" id="L510">		thirdObj.add(6);</span>
+
+<span class="fc" id="L512">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L513">		myListImpl.add(firstObj);</span>
+<span class="fc" id="L514">		myListImpl.add(secondObj);</span>
+<span class="fc" id="L515">		myListImpl.add(thirdObj);</span>
+
+		try {
+<span class="nc" id="L518">			myListImpl.removeAt(3);</span>
+<span class="nc" id="L519">		}</span>
+<span class="fc" id="L520">		catch(Exception e)</span>
+		{
+<span class="nc" id="L522">			fail(&quot;Out of Range&quot;);</span>
+		}
+
+<span class="nc" id="L525">	}</span>
+
+
+	/*
+	 * Test de la fonction reset()
+	 * CAS DE TEST #1
+	 * Test: Taille de la liste �gale � 1
+	 * 		 Apr�s l'appel de la fonction reset() la taille �gale � 0
+	 */
+	@Test
+	public void testReset() {
+
+<span class="fc" id="L537">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L538">		firstObj.add(1);</span>
+<span class="fc" id="L539">		firstObj.add(2);</span>
+
+<span class="fc" id="L541">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L542">		myListImpl.add(firstObj);</span>
+
+<span class="fc" id="L544">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L545">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+
+<span class="fc" id="L547">		myListImpl.reset();</span>
+<span class="fc" id="L548">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L549">		assertEquals(&quot;Les tailles sont egales&quot; ,0, myListImpl.getSize());</span>
+
+<span class="fc" id="L551">	}</span>
+
+	/*
+	 * Test de la fonction setAt()
+	 * CAS DE TEST #1
+	 * Test: Taille de la liste �gale � 3
+	 * 		 setAt(obj, 1) OK
+	 * 		 setAt(obj, 2) OK
+	 *     0 &lt; pos &lt; size()
+	 */
+	@Test
+	public void testSetAt12() {
+
+<span class="fc" id="L564">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L565">		firstObj.add(1);</span>
+<span class="fc" id="L566">		firstObj.add(2);</span>
+
+<span class="fc" id="L568">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L569">		secondObj.add(3);</span>
+<span class="fc" id="L570">		secondObj.add(4);</span>
+
+<span class="fc" id="L572">		ArrayList&lt;Object&gt; thirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L573">		secondObj.add(4);</span>
+<span class="fc" id="L574">		secondObj.add(5);</span>
+
+<span class="fc" id="L576">		ArrayList&lt;Object&gt; replaceFirstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L577">		replaceFirstObj.add(6);</span>
+<span class="fc" id="L578">		replaceFirstObj.add(7);</span>
+
+<span class="fc" id="L580">		ArrayList&lt;Object&gt; replaceSecondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L581">		replaceFirstObj.add(8);</span>
+<span class="fc" id="L582">		replaceFirstObj.add(9);</span>
+
+<span class="fc" id="L584">		ArrayList&lt;Object&gt; replaceThirdObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L585">		replaceFirstObj.add(10);</span>
+<span class="fc" id="L586">		replaceFirstObj.add(11);</span>
+
+<span class="fc" id="L588">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L589">		myListImpl.add(firstObj);</span>
+<span class="fc" id="L590">		myListImpl.add(secondObj);</span>
+<span class="fc" id="L591">		myListImpl.add(thirdObj);</span>
+
+<span class="fc" id="L593">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L594">		assertEquals(&quot;Les tailles sont egales&quot; ,3, myListImpl.getSize());</span>
+<span class="fc" id="L595">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+<span class="fc" id="L597">		myListImpl.setAt(replaceSecondObj,1);</span>
+<span class="fc" id="L598">		assertEquals(&quot;Le contenu est pareil &quot;, replaceSecondObj, myListImpl.getAt(1));</span>
+
+<span class="fc" id="L600">		myListImpl.setAt(replaceThirdObj,2);</span>
+<span class="fc" id="L601">		assertEquals(&quot;Le contenu est pareil &quot;, replaceThirdObj, myListImpl.getAt(2));</span>
+<span class="fc" id="L602">	}</span>
+
+	/*
+	 * Test de la fonction setAt()
+	 * CAS DE TEST #2
+	 * Test: Taille de la liste �gale � 1
+	 * 		 setAt(obj, 0) OK
+	 *     0 == pos
+	 */
+	@Test
+	public void testSetAt0() {
+
+<span class="fc" id="L614">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L615">		firstObj.add(1);</span>
+<span class="fc" id="L616">		firstObj.add(2);</span>
+
+<span class="fc" id="L618">		ArrayList&lt;Object&gt; replaceFirstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L619">		replaceFirstObj.add(6);</span>
+<span class="fc" id="L620">		replaceFirstObj.add(7);</span>
+
+<span class="fc" id="L622">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L623">		myListImpl.add(firstObj);</span>
+
+<span class="fc" id="L625">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L626">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="fc" id="L627">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+<span class="fc" id="L629">		myListImpl.setAt(replaceFirstObj,0);</span>
+<span class="fc" id="L630">		assertEquals(&quot;Le contenu est pareil &quot;, replaceFirstObj, myListImpl.getAt(0));</span>
+<span class="fc" id="L631">	}</span>
+
+	/*
+	 * Test de la fonction setAt2()
+	 * CAS DE TEST #3
+	 * Test: Taille de la liste �gale � 1
+	 * 		 setAt(obj, 2) OK
+	 *     size() &lt; pos
+	 */
+	@Test
+	public void testSetAtOutOfRange() {
+
+<span class="fc" id="L643">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L644">		firstObj.add(1);</span>
+<span class="fc" id="L645">		firstObj.add(2);</span>
+
+<span class="fc" id="L647">		ArrayList&lt;Object&gt; replaceFirstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L648">		replaceFirstObj.add(6);</span>
+<span class="fc" id="L649">		replaceFirstObj.add(7);</span>
+
+<span class="fc" id="L651">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L652">		myListImpl.add(firstObj);</span>
+
+<span class="fc" id="L654">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L655">		assertEquals(&quot;Les tailles sont egales&quot;, 1, myListImpl.getSize());</span>
+<span class="fc" id="L656">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+		// Out Of Range
+		try {
+<span class="nc" id="L660">			myListImpl.setAt(replaceFirstObj,2);</span>
+<span class="nc" id="L661">			assertEquals(&quot;Le contenu est pareil &quot;, replaceFirstObj, myListImpl.getAt(2));</span>
+<span class="nc" id="L662">		}</span>
+<span class="fc" id="L663">		catch(Exception e)</span>
+		{
+<span class="nc" id="L665">			fail(&quot;Out of range&quot;);</span>
+		}
+<span class="nc" id="L667">	}</span>
+
+	/*
+	 * Test de la fonction getAt()
+	 * CAS DE TEST #1
+	 * Test: Taille de la liste �gale � 1
+	 * 		 getAt(0) OK
+	 *     pos == 0
+	 */
+	@Test
+	public void testGetAt0() {
+
+<span class="fc" id="L679">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L680">		firstObj.add(1);</span>
+<span class="fc" id="L681">		firstObj.add(2);</span>
+
+<span class="fc" id="L683">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L684">		myListImpl.add(firstObj);</span>
+
+<span class="fc" id="L686">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L687">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="fc" id="L688">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+<span class="fc" id="L689">	}</span>
+
+	/*
+	 * Test de la fonction getAt()
+	 * CAS DE TEST #2
+	 * Test: Taille de la liste �gale � 2
+	 * 		 getAt(1) OK
+	 * 		 0 &lt; pos &lt; size()
+	 */
+	@Test
+	public void testGetAt1() {
+
+<span class="fc" id="L701">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L702">		firstObj.add(1);</span>
+<span class="fc" id="L703">		firstObj.add(2);</span>
+
+
+<span class="fc" id="L706">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L707">		secondObj.add(2);</span>
+<span class="fc" id="L708">		secondObj.add(3);</span>
+
+<span class="fc" id="L710">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L711">		myListImpl.add(firstObj);</span>
+<span class="fc" id="L712">		myListImpl.add(secondObj);</span>
+
+<span class="fc" id="L714">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L715">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+<span class="fc" id="L716">		assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(1));</span>
+<span class="fc" id="L717">	}</span>
+
+	/*
+	 * Test de la fonction getAt()
+	 * CAS DE TEST #3
+	 * Test: Taille de la liste �gale � 2
+	 * 		 getAt(2) ERROR Out of Range
+	 *     pos &gt; size()
+	 */
+	@Test
+	public void testGetAt2() {
+
+<span class="fc" id="L729">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L730">		firstObj.add(1);</span>
+<span class="fc" id="L731">		firstObj.add(2);</span>
+
+
+<span class="fc" id="L734">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L735">		secondObj.add(2);</span>
+<span class="fc" id="L736">		secondObj.add(3);</span>
+
+<span class="fc" id="L738">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L739">		myListImpl.add(firstObj);</span>
+<span class="fc" id="L740">		myListImpl.add(secondObj);</span>
+
+<span class="fc" id="L742">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L743">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+
+		try {
+<span class="nc" id="L746">			assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(2));</span>
+<span class="nc" id="L747">		}</span>
+<span class="fc" id="L748">		catch(Exception e)</span>
+		{
+<span class="nc" id="L750">			fail(&quot;Out Of Range&quot;);</span>
+		}
+
+<span class="nc" id="L753">	}</span>
+
+	/*
+	 * Test de la fonction removeItem()
+	 * CAS DE TEST #1 
+	 * Test: Taille de la liste �gale � 1
+	 * 		 removeItem(existedObject) OK
+	 */
+	@Test
+	public void testRemoveAtFirst() {
+
+<span class="fc" id="L764">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L765">		firstObj.add(1);</span>
+<span class="fc" id="L766">		firstObj.add(2);</span>
+
+<span class="fc" id="L768">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L769">		myListImpl.add(firstObj);</span>
+
+<span class="fc" id="L771">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L772">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="fc" id="L773">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+		try {
+<span class="fc" id="L776">			myListImpl.removeItem(firstObj);</span>
+<span class="fc" id="L777">		}</span>
+<span class="nc" id="L778">		catch(Exception e)</span>
+		{
+<span class="nc" id="L780">			fail(&quot;Out Of Range&quot;);</span>
+		}
+<span class="fc" id="L782">	}</span>
+	
+	/*
+	 * Test de la fonction removeItem()
+	 * CAS DE TEST #2  
+	 * Test: Taille de la liste �gale � 2
+	 * 		 removeItem(secondePosition) OK
+	 */
+	@Test
+	public void testRemoveItemSecondPos() {
+
+<span class="fc" id="L793">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L794">		firstObj.add(1);</span>
+<span class="fc" id="L795">		firstObj.add(2);</span>
+
+<span class="fc" id="L797">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L798">		secondObj.add(7);</span>
+<span class="fc" id="L799">		secondObj.add(2);</span>
+
+<span class="fc" id="L801">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L802">		myListImpl.add(firstObj);</span>
+<span class="fc" id="L803">		myListImpl.add(secondObj);</span>
+
+<span class="fc" id="L805">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L806">		assertEquals(&quot;Les tailles sont egales&quot; ,2, myListImpl.getSize());</span>
+<span class="fc" id="L807">		assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(1));</span>
+
+		try {
+<span class="fc" id="L810">			myListImpl.removeItem(secondObj);</span>
+<span class="fc" id="L811">		}</span>
+<span class="nc" id="L812">		catch(Exception e)</span>
+		{
+<span class="nc" id="L814">			 fail(&quot;Out Of Range&quot;);</span>
+		}
+<span class="fc" id="L816">	}</span>
+
+	/*
+	 * Test de la fonction removeItem()
+	 * CAS DE TEST #3   
+	 * Test: Taille de la liste �gale � 1
+	 * 		 removeItem(NotexistedObject) ERROR NOTexistedObject
+	 */
+	@Test
+	public void testRemoveItemNotExisted() {
+
+<span class="fc" id="L827">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L828">		firstObj.add(1);</span>
+<span class="fc" id="L829">		firstObj.add(2);</span>
+
+<span class="fc" id="L831">		ArrayList&lt;Object&gt; notAddedObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L832">		firstObj.add(5);</span>
+<span class="fc" id="L833">		firstObj.add(6);</span>
+
+<span class="fc" id="L835">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L836">		myListImpl.add(firstObj);</span>
+
+<span class="fc" id="L838">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L839">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="fc" id="L840">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+
+		try {
+<span class="nc" id="L843">			myListImpl.removeItem(notAddedObj);</span>
+<span class="nc" id="L844">		}</span>
+<span class="fc" id="L845">		catch(Exception e)</span>
+		{
+<span class="nc" id="L847">			 fail(&quot;Out Of Range&quot;);</span>
+		}
+<span class="nc" id="L849">	}</span>
+	
+	/*
+	 * Test de la fonction testAddFirst()
+	 * CAS DE TEST #1   
+	 * Test: Taille de la liste �gale � 1
+	 * 		 add(fistObject) Ok
+	 */
+	@Test
+	public void testAddFirst() {
+
+<span class="fc" id="L860">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L861">		firstObj.add(1);</span>
+<span class="fc" id="L862">		firstObj.add(2);</span>
+
+<span class="fc" id="L864">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L865">		myListImpl.add(firstObj);</span>
+
+<span class="fc" id="L867">		System.out.println(&quot;SizeOf the array&quot; + myListImpl.getSize());</span>
+<span class="fc" id="L868">		assertEquals(&quot;Les tailles sont egales&quot; ,1, myListImpl.getSize());</span>
+<span class="fc" id="L869">		assertEquals(&quot;Le contenu est pareil &quot;, firstObj, myListImpl.getAt(0));</span>
+		
+<span class="fc" id="L871">	}</span>
+	
+	/*
+	 * Test de la fonction testAddSecond()
+	 * CAS DE TEST #2   
+	 * Test: Taille de la liste �gale � 2
+	 * 		 add(secondObject) Ok
+	 */
+	@Test
+	public void testAddSecond() {
+
+<span class="fc" id="L882">		ArrayList&lt;Object&gt; firstObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L883">		firstObj.add(1);</span>
+<span class="fc" id="L884">		firstObj.add(2);</span>
+		
+<span class="fc" id="L886">		ArrayList&lt;Object&gt; secondObj = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L887">		secondObj.add(5);</span>
+<span class="fc" id="L888">		secondObj.add(6);</span>
+
+<span class="fc" id="L890">		MyListImpl myListImpl = new MyListImpl();</span>
+<span class="fc" id="L891">		myListImpl.add(firstObj);</span>
+<span class="fc" id="L892">		myListImpl.add(secondObj);</span>
+
+<span class="fc" id="L894">		assertEquals(&quot;Les tailles sont egales&quot; ,2 , myListImpl.getSize());</span>
+<span class="fc" id="L895">		assertEquals(&quot;Le contenu est pareil &quot;, secondObj, myListImpl.getAt(1));</span>
+		
+<span class="fc" id="L897">	}</span>
+	
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>ListeChaineeTestEC (14-Feb-2018 11:14:04 PM)</div></body></html>

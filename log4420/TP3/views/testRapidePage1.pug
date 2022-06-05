@@ -1,0 +1,19 @@
+extend questionLayout
+block questionForm
+  section.sub-container
+    h2.sub-container-title Question 1
+      div.sub-title Quel est le doctype d'un document HTML5 ?
+    form(action='/testRapide/2')
+      div
+        label.form-label(for='reponse1')
+          input.form-input#reponse1(name='question', type='radio')
+          |  !DOCTYPE html5
+      div
+        label.form-label(for='reponse2')
+          input.form-input#reponse2(name='question', type='radio')
+          |  !DOCTYPE html
+      div
+        label.form-label(for='reponse3')
+          input.form-input#reponse3(name='question', type='radio')
+          |  !DOCTYPE html PUBLIC "-//W3C//DTD HTML5.0 Strict//EN".
+      input.default-button.col-m-12.col-12(type='submit' value="Question suivante")

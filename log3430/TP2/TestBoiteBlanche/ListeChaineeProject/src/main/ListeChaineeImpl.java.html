@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ListeChaineeImpl.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">ListeChaineeTestEC (14-Feb-2018 11:14:04 PM)</a> &gt; <a href="../../index.html" class="el_group">ListeChaineeProject</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main</a> &gt; <span class="el_source">ListeChaineeImpl.java</span></div><h1>ListeChaineeImpl.java</h1><pre class="source lang-java linenums">/**
+ * @class			: ListeChaineeImpl
+ * @interface		: ListeChainee
+ * @author	 		: Ons mlouki
+ * 					  Ons.mlouki@gmail.com
+ */
+package main;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+<span class="fc" id="L12">public class ListeChaineeImpl implements ListeChainee {</span>
+	
+	public MyList build(String op,ArrayList&lt;Object&gt; val1, ArrayList&lt;Object&gt; val2) throws IOException{
+		
+		
+<span class="fc" id="L17">		StringBuilder chaineContent=new StringBuilder();</span>
+		
+<span class="fc" id="L19">		MyList list = new MyListImpl();	</span>
+		
+<span class="fc" id="L21">		list.add(val1);</span>
+<span class="fc" id="L22">		chaineContent.append(&quot;&quot;+val1);</span>
+			 
+<span class="fc" id="L24">		list.add(val2);</span>
+<span class="fc" id="L25">		chaineContent.append(&quot; &quot;+val2);</span>
+		
+<span class="fc" id="L27">		SetCalculator myCalculator= new SetCalculatorImpl();</span>
+		 
+<span class="fc" id="L29">		 int i=1;</span>
+					
+<span class="pc bpc" id="L31" title="6 of 19 branches missed.">		switch (op){</span>
+		   case &quot;union&quot;:{
+<span class="fc" id="L33">			   list.add(myCalculator.union(list.getAt(i-1),list.getAt(i)));</span>
+<span class="fc" id="L34">			   i++;</span>
+<span class="fc" id="L35">			   chaineContent.append(&quot; &quot;+list.getAt(i));</span>
+			   
+			   };
+<span class="fc" id="L38">		   break;</span>
+		   case &quot;intersection&quot;:{
+<span class="fc" id="L40">			   list.add(myCalculator.intersection(list.getAt(i-1),list.getAt(i)));</span>
+<span class="fc" id="L41">			   i++;</span>
+<span class="fc" id="L42">			   chaineContent.append(&quot; &quot;+list.getAt(i)); </span>
+			   };
+<span class="fc" id="L44">		   break;</span>
+		   case &quot;difference&quot;:{
+<span class="fc" id="L46">			   list.add(myCalculator.difference(list.getAt(i-1),list.getAt(i)));</span>
+<span class="fc" id="L47">			   i++;</span>
+<span class="fc" id="L48">			   chaineContent.append(&quot; &quot;+list.getAt(i)); </span>
+			   };
+<span class="fc" id="L50">		   break;</span>
+		   case &quot;symDifference&quot;:{
+<span class="fc" id="L52">			   list.add(myCalculator.symDifference(list.getAt(i-1),list.getAt(i)));</span>
+<span class="fc" id="L53">			   i++;</span>
+<span class="fc" id="L54">			   chaineContent.append(&quot; &quot;+list.getAt(i));</span>
+			   };
+<span class="fc" id="L56">		   break;</span>
+		   case &quot;isSubset&quot;:{
+<span class="fc" id="L58">			   list.add(myCalculator.isSubset(list.getAt(i-1),list.getAt(i)));</span>
+<span class="fc" id="L59">			   i++;</span>
+<span class="fc" id="L60">			   chaineContent.append(&quot; &quot;+list.getAt(i)); </span>
+			   };
+<span class="fc" id="L62">		   break; </span>
+		   case &quot;isSuperset&quot;:{
+<span class="fc" id="L64">			   list.add(myCalculator.isSuperset(list.getAt(i-1),list.getAt(i)));</span>
+<span class="fc" id="L65">			   i++;</span>
+<span class="fc" id="L66">			   chaineContent.append(&quot; &quot;+list.getAt(i)); </span>
+			   };
+<span class="fc" id="L68">		   break;</span>
+<span class="fc" id="L69">		   default:System.out.println(&quot;operateur &quot;+op+&quot; non identifié&quot;);</span>
+			   break;
+		}
+		
+<span class="fc" id="L73">		return list;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>ListeChaineeTestEC (14-Feb-2018 11:14:04 PM)</div></body></html>

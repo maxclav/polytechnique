@@ -1,0 +1,18 @@
+extend layout
+block content
+  main
+    section
+      h1.page-header #{title}
+      div.question-flex-container.col-m-12.col-10
+        div.question-panel.col-m-12.col-8
+          section.sub-container.question-status-bar
+            button.default-button(type='button', onclick="location.href = '/tableauDeBord';") Tableau de bord
+            div
+              b Domaine :
+              span  HTML
+            div
+              b Note courante :
+              span  0/2
+          block questionForm
+        section#stats-panel.col-m-12.col-4
+          include statistiques.pug

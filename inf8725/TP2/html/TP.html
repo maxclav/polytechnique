@@ -1,0 +1,1088 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TP</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-11-05"><meta name="DC.source" content="TP.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Exercice 1 (5 points): Rehaussement d'image</a></li><li><a href="#3">Exercice 2 (5 points): Compteur de monnaie</a></li><li><a href="#4">Exercice 3 (3.5 points): Transform&eacute;e de Fourier 2D</a></li><li><a href="#5">Exercice 4 (6.5 points): Filtrage spectral</a></li></ul></div><pre class="codeinput">type <span class="string">Egalisation_Histogramme.m</span>
+type <span class="string">Convolution.m</span>
+type <span class="string">Rehaussement_Contour.m</span>
+type <span class="string">Binariser.m</span>
+type <span class="string">Fermeture.m</span>
+type <span class="string">Compter_Monnaie.m</span>
+type <span class="string">Calculer_TFD.m</span>
+</pre><pre class="codeoutput">
+function [ ImageEgalisee ] = Egalisation_Histogramme( Image )
+%EGALISATION_HISTOGRAMME Applique une &eacute;galisation d'histogramme &agrave; une image
+%   (notes de cours "Filtrage spatial d'images, page 20)
+
+    % Histogramme cumulatif normalis&eacute; de l'image de d&eacute;part
+    Histo = imhist(Image);
+    T = cumsum(Histo)/sum(Histo);
+    
+    % Cr&eacute;ation de l'image finale
+    [m,n] = size(Image);
+    I = ones(m,n);
+    
+    % &Eacute;galisation 
+    for i = 1:m
+        for j = 1:n
+            pixel = Image(i,j) + 1;
+            I(i,j) = T(pixel);
+        end
+    end
+    
+    ImageEgalisee = I;
+end
+
+
+function [ ImageFiltree ] = Convolution( Image, Masque )
+%CONVOLUTION Renvoit la convolution d'une image et d'un masque
+%   (notes de cours "Filtrage spatial d'images, page 20)   
+
+    % D&eacute;terminer les index pour le padding
+    [k,p] = size(Masque);
+    k = (k-1)/2;
+    p = (p-1)/2;
+
+    % 0 padding
+    % padarray: https://www.mathworks.com/help/images/ref/padarray.html
+    ImageRembouree = padarray(Image, [k, p], 0, 'both');
+    ImageFiltree = zeros(size(Image));
+    
+    [h, w] = size(Image);
+    for i = 1:h
+        for j = 1:w
+            ImageFiltree(i,j) = sum(sum(double(ImageRembouree(i:i+2*k,j:j+2*p)) .* Masque));
+        end
+    end
+end
+
+
+function [ imageRehaussee, Laplacien ] = Rehaussement_Contour( Image, K, type)
+%REHAUSSEMENT_CONTOUR Summary of this function goes here
+%   Detailed explanation goes her
+    
+    % Masque Gaussien
+    G =   [1 2 1;
+           2 4 2;
+           1 2 1] /16;
+
+    % MasqueLaplacien (Type 1 est celui de l'&eacute;nnonc&eacute;)
+    if(type == 1)
+        L = [-1 -1 -1; -1  8 -1; -1 -1 -1];
+    elseif(type == 2)
+        L = [1 1 1; 1  -8 1; 1 1 1];
+    elseif(type == 3)
+        L = [0 1 0; 1 -4 1; 0 1 0];
+    elseif(type == 4)
+        L = [0 -1 0; -1 4 -1; 0 -1 0];
+    else
+        L = [-1 -1 -1; -1  8 -1; -1 -1 -1];
+    end
+    
+    % Algorithme de rehaussement de contour
+    Ig = Convolution(Image, G);
+    Laplacien = Convolution(Ig, L);
+    imageRehaussee = Ig + K .* Laplacien;
+    
+    % &laquo; Attention, le laplacien peut renvoyer des valeurs n&eacute;gatives &raquo;
+    % Voir premi&egrave;re r&eacute;ponse &agrave;: https://www.mathworks.com/matlabcentral/answers/31927-help-how-to-replace-all-the-negative-values-in-an-array-with-zeros
+    Laplacien(Laplacien&lt;0) = 0;
+    imageRehaussee(imageRehaussee &lt; 0) = 0;
+end
+
+
+function [ ImageBinaire ] = Binariser( Image, Seuil )
+%BINARISER Summary of this function goes here
+%   Detailed explanation goes here
+
+    % Impl&eacute;mentez une fonction Binariser qui met &agrave; 0 tous les pixels se trouvant
+    % en dessous du seuil, et &agrave; 255 tous les pixels se trouvant sur le seuil ou au dessus.
+
+    % Donne false=0 donc 0*255 = 0 OU true=1 donc 1*255 = 255
+    ImageBinaire = (Image &gt;= Seuil) * 255;
+end
+
+
+function [ ImageFermee ] = Fermeture( Image, ShapeType, Parameter)
+%FERMETURE Summary of this function goes here
+%   Detailed explanation goes here
+
+    % Effectuez une fermeture sur l&#8217;image binaire afin de fermer les trous
+
+    % strel: https://www.mathworks.com/help/images/ref/strel.html
+    elementStructurant = strel(ShapeType, Parameter);
+    
+    % imclose: https://www.mathworks.com/help/images/ref/imclose.html
+    ImageFermee = imclose(Image, elementStructurant);
+
+end
+
+
+function [ montant ] = Compter_Monnaie( Image )
+%COMPTER_MONNAIE Summary of this function goes here
+%   Detailed explanation goes here
+
+    % "ignorer les pi&egrave;ces de 1 dollar, 50 et 1 cent qui sont absentes. "
+    % Donc, nous avons des 0,05$, 0,10$, 0,25$ et 2,00$.
+    % Nos &eacute;l&eacute;ments structurants sont des disques avec des rayons de
+    % 90, 110, 120, 140 et 200.
+    
+    % imerode : https://www.mathworks.com/help/images/ref/imerode.html
+    % imdilate: https://www.mathworks.com/help/images/ref/imdilate.html
+    % Diff&eacute;rences: https://www.mathworks.com/matlabcentral/answers/uploaded_files/8310/morph1.jpg
+    % bwlabel: https://www.mathworks.com/help/images/ref/bwlabel.html
+
+    % Calculer le nombre total de pi&egrave;eces
+    nombreTotal = length(unique(bwlabel(imerode(Image, strel('disk', 90)))));
+    
+    % Calculer le nombre total de 0,10$
+    nombre10cents = nombreTotal - length(unique(bwlabel(imerode(Image, strel('disk', 110)))));
+    nombreRestant = nombreTotal - nombre10cents;
+    
+    % Calculer le nombre total de 0,05$
+    nombre5cents = nombreRestant - length(unique(bwlabel(imerode(Image, strel('disk', 120)))));
+    nombreRestant = nombreRestant - nombre5cents;
+
+    % Calculer le nombre total de 0,25$
+    nombre25cents = nombreRestant - length(unique(bwlabel(imerode(Image, strel('disk', 140)))));
+    nombreRestant = nombreRestant - nombre25cents;
+    
+    % Calculer le nombre total de 2$
+    nombre2dollars = nombreRestant - length(unique(bwlabel(imerode(Image, strel('disk', 200)))));
+    
+    
+    montant = nombre5cents*0.05 + nombre10cents*0.1 + nombre25cents*0.25 + nombre2dollars*2;
+
+end
+
+
+function [ TFD_image_reel ] = Calculer_TFD( image )
+%CALCULER_TFD Summary of this function goes here
+%   Detailed explanation goes here
+
+%     1) Calculer la TFD de l'Image avec la fonction fft2
+%     fft2: % https://www.mathworks.com/help/matlab/ref/fft2.html
+      TFD_image = fft2(image);
+    
+%     2) Centrer la TFD avec fftshift
+%     fftshift: https://www.mathworks.com/help/matlab/ref/fftshift.html
+      TFD_image_centre = fftshift(TFD_image);
+ 
+%     3) Normaliser la TFD
+      sizeX = size(TFD_image_centre, 1);
+      sizeY = size(TFD_image_centre, 2);
+      TFD_image_norm = TFD_image_centre/(sizeX*sizeY);
+      
+%     4) R&eacute;cup&eacute;rer la valeur r&eacute;el avec abs
+      TFD_image_reel = abs(TFD_image_norm);
+end
+
+</pre><h2 id="2">Exercice 1 (5 points): Rehaussement d'image</h2><pre class="codeinput"><span class="comment">% Nettoyage du workspace</span>
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+clc;
+
+<span class="comment">% Question 1 (1.5 points)</span>
+<span class="comment">% Chargez l&#8217;image theArtist.png avec la fonction imread</span>
+<span class="comment">% imread: https://www.mathworks.com/help/matlab/ref/imread.html</span>
+Image = imread(<span class="string">'theArtist.png'</span>);
+
+<span class="comment">% Fonction Egalisation_Histogramme impl&eacute;ment&eacute;e</span>
+<span class="comment">% voir Egalisation_Histogramme.m</span>
+ImageEgalisee = Egalisation_Histogramme(Image);
+
+<span class="comment">% Affichage r&eacute;sultats</span>
+figure(<span class="string">'Name'</span> , <span class="string">'Question 1 - Egalisation d histogrammes (Moins sombre)'</span>);
+subplot(2,2,1);
+imshow(Image);
+title(<span class="string">'Image originale sombre'</span>);
+subplot(2,2,3);
+imhist(Image);
+title(<span class="string">'Histogramme image originale'</span>);
+grid <span class="string">on</span>;
+subplot(2,2,2);
+imshow(ImageEgalisee);
+title(<span class="string">'Image &eacute;galis&eacute;e'</span>);
+subplot(2,2,4);
+imhist(ImageEgalisee);
+title(<span class="string">'Histogramme de l image &eacute;galis&eacute;e'</span>);
+grid <span class="string">on</span>;
+
+<span class="comment">% Question 2 (1 point)</span>
+<span class="comment">% Voir Convolution.m</span>
+
+<span class="comment">% Question 3 (0.5 point)</span>
+<span class="comment">% L&#8217;image &eacute;galis&eacute;e semble tr&egrave;s bruit&eacute;e. Appliquez un flou gaussien &agrave; l&#8217;image</span>
+ <span class="comment">%&eacute;galis&eacute; en la convoluant.</span>
+
+MasqueGaussien =   [1 2 1 2 1;
+                     2 4 8 4 2;
+                     1 8 18 8 1;
+                     2 4 8 4 2;
+                     1 2 1 2 1] /90;
+
+ImageFiltree = Convolution(ImageEgalisee, MasqueGaussien);
+
+<span class="comment">% Affichage r&eacute;sultats</span>
+figure(<span class="string">'Name'</span> , <span class="string">'Question 2&amp;3 - Convolution Gaussienne de l image (Moins de bruit)'</span>);
+subplot(2,2,1);
+imshow(ImageEgalisee);
+title(<span class="string">'Image &eacute;galis&eacute;e'</span>);
+subplot(2,2,3);
+imhist(ImageEgalisee);
+title(<span class="string">'Histogramme de l image &eacute;galis&eacute;e'</span>);
+grid <span class="string">on</span>;
+subplot(2,2,2);
+imshow(ImageFiltree);
+title(<span class="string">'Image flout&eacute;e'</span>);
+subplot(2,2,4);
+imhist(ImageFiltree);
+title(<span class="string">'Histogramme de l image flout&eacute;e'</span>);
+grid <span class="string">on</span>;
+
+<span class="comment">% Question 4 (1 point)</span>
+[ imageRehaussee, Laplacien ] = Rehaussement_Contour( ImageEgalisee, 1.2, 1 );
+
+figure(<span class="string">'Name'</span>, <span class="string">'Question 4 - Resultat de rehaussement et le Laplacien'</span>);
+subplot(2,3,1);
+imshow(ImageFiltree);
+title(<span class="string">'Image flout&eacute;e mais d&eacute;grad&eacute;e'</span>);
+subplot(2,3,4);
+imhist(ImageFiltree);
+title(<span class="string">'Histogramme de l image flout&eacute;e'</span>);
+grid <span class="string">on</span>;
+subplot(2,3,2);
+imshow(imageRehaussee);
+title(<span class="string">'R&eacute;sultat du rehaussement'</span>);
+subplot(2,3,5);
+imhist(imageRehaussee);
+title(<span class="string">'Histogramme du r&eacute;sultat'</span>);
+grid <span class="string">on</span>;
+subplot(2,3,3);
+imshow(Laplacien);
+title(<span class="string">'Le Laplacien'</span>);
+subplot(2,3,6);
+imhist(Laplacien);
+title(<span class="string">'Histogramme du Laplacien'</span>);
+grid <span class="string">on</span>;
+
+<span class="comment">% Question 5 (1 point)</span>
+<span class="comment">% Bien que les contours aient &eacute;t&eacute; rehauss&eacute;s, on voit appara&icirc;tre un nouveau</span>
+<span class="comment">% bruit.</span>
+
+<span class="comment">% Afin d'en &ecirc;tre sur, nous avons, dans un premier temps, test&eacute; diff&eacute;rentes valeurs du param&egrave;tre</span>
+<span class="comment">% K. Comme nous pouvons le voir &agrave; la figure 4, la premi&egrave;re image utilise</span>
+<span class="comment">% k=1,2 tel que demand&eacute; dans l'&eacute;nnonc&eacute;. La deuxi&egrave;me image utilise un K=0,2.</span>
+<span class="comment">% Cette image a moins de bruit, mais les contours sont comme si on n'avait</span>
+<span class="comment">% rien fait. La troisi&egrave;me image, quant &agrave; elle, a un K=2,4. Ces contours</span>
+<span class="comment">% sont assez d&eacute;finis, mais il y a &eacute;norm&eacute;ment de bruit. Donc, plus on veut</span>
+<span class="comment">% rehausser les contours en augmentant la veleur de K, plus le bruit s'&eacute;l&egrave;ve.</span>
+<span class="comment">%</span>
+<span class="comment">% Dans un deuxi&egrave;me temps, nous avons test&eacute; les quatres diff&eacute;rents masques</span>
+<span class="comment">% Laplacien donn&eacute;s dans les notes de cours. Le filtre exig&eacute; dans l'&eacute;nnonc&eacute;</span>
+<span class="comment">% semblait &ecirc;tre le 2e meilleur filtre.</span>
+<span class="comment">%</span>
+<span class="comment">% Dans un troisi&egrave;me temps, nous pouvons utiliser un filtre Median afin de</span>
+<span class="comment">% pr&eacute;server les contours tout en enlevant ce bruit qui somple &ecirc;trede type</span>
+<span class="comment">% "poivre et sel".</span>
+<span class="comment">%</span>
+<span class="comment">% Une solution id&eacute;ale serait donc de prendre le meilleur filtre</span>
+<span class="comment">% (L = [0 -1 0; -1 4 -1; 0 -1 0]) et de diminuer un peu la valeur du</span>
+<span class="comment">% param&egrave;etre K.</span>
+
+<span class="comment">% TESTS de l'algorithme de rehaussement de contour</span>
+<span class="comment">% ... avec un Masque Laplacien qui diff&egrave;ere (4 possibles selon les notes de cours)</span>
+[ imageRehaussee2, Laplacien2 ] = Rehaussement_Contour( ImageEgalisee, 1.2, 4 );
+<span class="comment">% ... avec un param&egrave;tre K plus bas et plus lev&eacute;</span>
+[ imageRehaussee3, Laplacien3 ] = Rehaussement_Contour( ImageEgalisee, 0.2, 1 );
+[ imageRehaussee4, Laplacien4 ] = Rehaussement_Contour( ImageEgalisee, 2.4, 1 );
+
+figure(<span class="string">'Name'</span>, <span class="string">'Question 5 - Tests'</span>);
+subplot(1,4,1);
+imshow(imageRehaussee);
+title(<span class="string">'Masque original k=1,2'</span>);
+subplot(1,4,4);
+imshow(imageRehaussee2);
+title(<span class="string">'Masque diff&eacute;rent k=1,2'</span>);
+subplot(1,4,2);
+imshow(imageRehaussee3);
+title(<span class="string">'Masque original k=0,2'</span>);
+subplot(1,4,3);
+imshow(imageRehaussee4);
+title(<span class="string">'Masque original k=2.4'</span>);
+</pre><img vspace="5" hspace="5" src="TP_01.png" alt=""> <img vspace="5" hspace="5" src="TP_02.png" alt=""> <img vspace="5" hspace="5" src="TP_03.png" alt=""> <img vspace="5" hspace="5" src="TP_04.png" alt=""> <h2 id="3">Exercice 2 (5 points): Compteur de monnaie</h2><pre class="codeinput"><span class="comment">% Nettoyage du workspace</span>
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+clc;
+
+<span class="comment">% Question 1 (0.5 point)</span>
+<span class="comment">% Chargez l&#8217;image pieces.jpg</span>
+Image = imread(<span class="string">'pieces.jpg'</span>);
+<span class="comment">% Convertissez la en niveau de gris</span>
+ImageGris = rgb2gray(Image);
+
+<span class="comment">% Affichez cette image</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Question 1 - Niveau de gris'</span>);
+subplot(1,2,1);
+imshow(Image);
+title(<span class="string">'Image originale'</span>);
+subplot(1,2,2);
+imshow(ImageGris);
+title(<span class="string">'Image en gris'</span>);
+
+<span class="comment">% Question 2 (1 point)</span>
+<span class="comment">% Voir Binariser.m</span>
+ImageBinaire = Binariser(ImageGris, 250);
+<span class="comment">% Inverser les couleurs</span>
+ImageBinaireInverse = 255 - ImageBinaire;
+
+<span class="comment">% Affichez l'image binaire</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Question 2 - Binariser'</span>);
+subplot(1,2,1);
+imshow(ImageBinaire);
+title(<span class="string">'Couleurs originales'</span>);
+subplot(1,2,2);
+imshow(ImageBinaireInverse);
+title(<span class="string">'Couleurs invers&eacute;es'</span>);
+
+<span class="comment">% Question 3 (1.5 points)</span>
+<span class="comment">% On va tester avec des forme(Shapes) et des param&egrave;tres diff&eacute;rents de l'&eacute;l&eacute;ment structurant.</span>
+
+<span class="comment">% Voir Fermeture.m</span>
+<span class="comment">% Tests avec diff&eacute;rentes formes comme &eacute;l&eacute;ment de structure (SE)</span>
+ImageFermee1 = Fermeture( ImageBinaireInverse, <span class="string">'square'</span>, 1);
+ImageFermee2 = Fermeture( ImageBinaireInverse, <span class="string">'sphere'</span>, 1);
+ImageFermee3 = Fermeture( ImageBinaireInverse, <span class="string">'diamond'</span>, 1);
+
+figure(<span class="string">'Name'</span>, <span class="string">'Question 3 - Fermeture avec des diff&eacute;rentes formes pour l &eacute;l&eacute;ment structurant (SE)'</span>);
+subplot(1,3,1);
+imshow(ImageFermee1);
+title(<span class="string">'SE: Carr&eacute;'</span>);
+subplot(1,3,2);
+imshow(ImageFermee2);
+title(<span class="string">'SE: Sph&egrave;re'</span>);
+subplot(1,3,3);
+imshow(ImageFermee3);
+title(<span class="string">'SE: Diamand'</span>);
+
+<span class="comment">% Comme nous pouvons le voir dans la figure 3, la sph&egrave;re semble &ecirc;tre une</span>
+<span class="comment">% meilleure option afin de fermer les trous des pi&egrave;ces.</span>
+
+<span class="comment">% Tests avec un param&egrave;tre (ici un rayon)</span>
+ImageFermee4 = Fermeture( ImageBinaireInverse, <span class="string">'sphere'</span>, 1);
+ImageFermee5 = Fermeture( ImageBinaireInverse, <span class="string">'sphere'</span>, 10);
+
+figure(<span class="string">'Name'</span>, <span class="string">'Question 3 - Fermeture avec une sph&egrave;re avec un rayon diff&eacute;rent'</span>);
+subplot(1,2,1);
+imshow(ImageFermee4);
+title(<span class="string">'r = 1'</span>);
+subplot(1,2,2);
+imshow(ImageFermee5);
+title(<span class="string">'r = 10'</span>);
+
+<span class="comment">% Aussi, plus le param&egrave;tre "Parameter" de notre fonction Fermeture( Image,</span>
+<span class="comment">% ShapeType, Parameter) est grand, plus le remplissage est optimal.</span>
+<span class="comment">% Cependant, le temps d'ex&eacute;cution augmente consid&eacute;rablement.</span>
+<span class="comment">%</span>
+<span class="comment">% La solution optimale est donc de prendre, parmis nos essaies, un</span>
+<span class="comment">% &eacute;l&eacute;ment strucurant ayant comme forme une sph&egrave;re et un rayon (Parameter)</span>
+<span class="comment">% &eacute;gal &agrave; 10.</span>
+
+
+<span class="comment">% Question 4 (2 points)</span>
+<span class="comment">% Nous utilisons la meilleure image ferm&eacute;e, soit ImageFermee5, tel</span>
+<span class="comment">% qu'expliqu&eacute; &agrave; la question pr&eacute;c&eacute;dente.</span>
+
+disp(<span class="string">'Montant total: '</span>)
+<span class="comment">% Afin que le montant soit en format banque (&agrave; 2 d&eacute;cimales apr&egrave;s la virgule)</span>
+format <span class="string">bank</span>
+<span class="comment">% Voir Compter_Monnaie.m</span>
+Compter_Monnaie(ImageFermee5) <span class="comment">% $</span>
+</pre><pre class="codeoutput">Montant total: 
+
+ans =
+
+          5.65
+
+</pre><img vspace="5" hspace="5" src="TP_05.png" alt=""> <img vspace="5" hspace="5" src="TP_06.png" alt=""> <img vspace="5" hspace="5" src="TP_07.png" alt=""> <img vspace="5" hspace="5" src="TP_08.png" alt=""> <h2 id="4">Exercice 3 (3.5 points): Transform&eacute;e de Fourier 2D</h2><pre class="codeinput"><span class="comment">% Nettoyage du workspace</span>
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+clc;
+
+<span class="comment">% Question 1 (0.5 point)</span>
+<span class="comment">% Chargez les images</span>
+ImageVert = imread(<span class="string">'Barres_Verticales.png'</span>);
+ImageHoriz = imread(<span class="string">'Barres_Horizontales.png'</span>);
+ImageObli = imread(<span class="string">'Barres_Obliques.png'</span>);
+
+<span class="comment">% Afficher les images</span>
+figure(<span class="string">'Name'</span> , <span class="string">'Question 1 - Des barres...'</span>);
+subplot(1,3,1);
+imshow(ImageVert);
+title(<span class="string">'verticales'</span>)
+subplot(1,3,2);
+imshow(ImageHoriz);
+title(<span class="string">'horizontales'</span>)
+subplot(1,3,3);
+imshow(ImageObli);
+title(<span class="string">'obliques'</span>)
+
+<span class="comment">% Question 2 (1.5 points)</span>
+
+<span class="comment">% Calculez les TFD des trois images</span>
+TFD_vert = Calculer_TFD(ImageVert);
+TFD_horz = Calculer_TFD(ImageHoriz);
+TFD_obli = Calculer_TFD(ImageObli);
+
+<span class="comment">% Affichez les TFDs calcul&eacute;s</span>
+<span class="comment">% Pour des fins de visualisation, nous utilisons log(1 + TFD(IM)).</span>
+figure(<span class="string">'Name'</span> , <span class="string">'Question 2 - Images des barres et de leurs histogrammes'</span>);
+subplot(2,3,4);
+imshow(log(1 + TFD_vert),[]);
+subplot(2,3,5);
+imshow(log(1 + TFD_horz),[]);
+subplot(2,3,6);
+imshow(log(1 + TFD_obli),[]);
+<span class="comment">% Afficher les images originales pour une meilleure analyse</span>
+subplot(2,3,1);
+imshow(ImageVert);
+title(<span class="string">'verticales'</span>)
+subplot(2,3,2);
+imshow(ImageHoriz);
+title(<span class="string">'horizontales'</span>)
+subplot(2,3,3);
+imshow(ImageObli);
+title(<span class="string">'obliques'</span>)
+
+<span class="comment">% Question 3 (0.5 point)</span>
+<span class="comment">% Tournez l&#8217;image Barres_Verticales.png de 70 degr&eacute;s avec l&#8217;aide de imrotate</span>
+<span class="comment">% imrotate: https://www.mathworks.com/help/images/ref/imrotate.html</span>
+<span class="comment">% Utilisez l&#8217;option bilinear et crop de la fonction imrotate</span>
+ImageVertTourne = imrotate(ImageVert, 70, <span class="string">'bilinear'</span>, <span class="string">'crop'</span>);
+
+<span class="comment">% Calculez TFD de l'image tourn&eacute;e</span>
+TFD_VertTourne = Calculer_TFD(ImageVertTourne);
+
+<span class="comment">% Affichez la TFD de l'image tourn&eacute;ee</span>
+figure(<span class="string">'Name'</span> , <span class="string">'Question 3'</span>);
+subplot(2,1,2);
+imshow(log(1+TFD_VertTourne),[]);
+subplot(2,1,1);
+<span class="comment">% Afficher l'image originale pour une meilleure analyse</span>
+imshow(ImageVertTourne);
+title(<span class="string">'Barres verticales tourn&eacute;es'</span>)
+
+<span class="comment">% Question 4 (1 point)</span>
+<span class="comment">% Par la comparaison des images en 2, et en 3, on peut inf&eacute;rer que la</span>
+<span class="comment">% rotation d'une image se traduit par une rotation identique dans le plan</span>
+<span class="comment">% des fr&eacute;quences, tel qu'expliqu&eacute; ici:</span>
+<span class="comment">% (http://www.tsi.enst.fr/pages/enseignement/ressources/mti/ondelettes-2g/francais/Fourier/TF2D.htm)</span>
+</pre><img vspace="5" hspace="5" src="TP_09.png" alt=""> <img vspace="5" hspace="5" src="TP_10.png" alt=""> <img vspace="5" hspace="5" src="TP_11.png" alt=""> <h2 id="5">Exercice 4 (6.5 points): Filtrage spectral</h2><pre class="codeinput"><span class="comment">% Nettoyage du workspace</span>
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+clc;
+
+<span class="comment">% Question 1 (0.5 point)</span>
+<span class="comment">% Chargez l&#8217;image maillot.png</span>
+imageMaillot = imread(<span class="string">'maillot.png'</span>);
+
+<span class="comment">% Calculez sa TFD  et conserver la phase de la TFD (sans abs donc sans notre fonction cr&eacute;&eacute;e)</span>
+
+<span class="comment">% 1) Calculez la TFD de l'Image avec la fonction fft2</span>
+<span class="comment">% fft2: % https://www.mathworks.com/help/matlab/ref/fft2.html</span>
+TFD_maillot = fft2(imageMaillot);
+
+<span class="comment">% 2) Centrez la TFD avec fftshift</span>
+<span class="comment">% fftshift: https://www.mathworks.com/help/matlab/ref/fftshift.html</span>
+TFD_maillot_centre = fftshift(TFD_maillot);
+
+<span class="comment">% 3) Normalisez la TFD</span>
+sizeX = size(TFD_maillot_centre, 1);
+sizeY = size(TFD_maillot_centre, 2);
+TFD_maillot_norm = TFD_maillot_centre/(sizeX*sizeY);
+
+<span class="comment">% Affichez l'image et sa TFD calcul&eacute;e (mettre abs dans la fonction)</span>
+<span class="comment">% Pour des fins de visualisation, nous utilisons log(1 + TFD(IM)).</span>
+figure(<span class="string">'Name'</span> , <span class="string">'Question 1 - TFD du maillot'</span>);
+subplot(1,2,1);
+imshow(imageMaillot);
+title(<span class="string">'Image originale'</span>);
+subplot(1,2,2);
+TFD_maillot_reel = abs(TFD_maillot_norm);
+imshow(log(1+TFD_maillot_reel),[]);
+title(<span class="string">'Histogramme'</span>);
+
+<span class="comment">% Note: c'est plus clair sans "[]" dans imshow comme ceci</span>
+<span class="comment">% imshow(log(1+TFD_maillot_reel));</span>
+
+<span class="comment">% Question 2 (1 point)</span>
+figure(<span class="string">'Name'</span> , <span class="string">'Question 2 - Identification des textures'</span>);
+schemaMaillot = imread(<span class="string">'Schema_maillot.png'</span>);
+imshow(schemaMaillot);
+
+<span class="comment">% Question 3 (1 point)</span>
+
+<span class="comment">% Cr&eacute;er un filtre passe-bas gaussien dans le domaine spectral avec la</span>
+<span class="comment">% fonction fspecial pour faire disparaitre les hachures de la poche.</span>
+<span class="comment">% La taille de votre filtre doit &ecirc;tre de la m&ecirc;me taille que le spectre.</span>
+<span class="comment">% fspecial: https://www.mathworks.com/help/images/ref/fspecial.html</span>
+
+<span class="comment">% Testons 3 diff&eacute;rents suigmas et affichohns-les.</span>
+h1 = fspecial(<span class="string">'gaussian'</span>, size(imageMaillot), 1);
+h2 = fspecial(<span class="string">'gaussian'</span>, size(imageMaillot), 2);
+h3 = fspecial(<span class="string">'gaussian'</span>, size(imageMaillot), 3);
+
+<span class="comment">% imfilter: https://www.mathworks.com/help/images/ref/imfilter.html</span>
+maillot_filtre1 = imfilter(imageMaillot, h1);
+maillot_filtre2 = imfilter(imageMaillot, h2);
+maillot_filtre3 = imfilter(imageMaillot, h3);
+
+figure(<span class="string">'Name'</span> , <span class="string">'Question 3 - Faire disparaitre les hachures de la poche'</span>);
+subplot(1,4,1);
+imshow(imageMaillot);
+title(<span class="string">'Sans filtre'</span>);
+subplot(1,4,2);
+imshow(maillot_filtre1);
+title(<span class="string">'Sigma = 1'</span>);
+subplot(1,4,3);
+imshow(maillot_filtre2);
+title(<span class="string">'Sigma = 2'</span>);
+subplot(1,4,4);
+imshow(maillot_filtre3);
+title(<span class="string">'Sigma = 3'</span>);
+
+<span class="comment">% Comme nous pouvons le remarquer, la valeur minimale que doit avoir le</span>
+<span class="comment">% param&egrave;tre sigma est 2 si l'on utilise la fonction imfilter.</span>
+
+<span class="comment">% Question 4 (0.5 point)</span>
+<span class="comment">% En vous inspirant de la m&eacute;thode pr&eacute;c&eacute;dente, cr&eacute;ez le filtre passe-haut qui</span>
+<span class="comment">% affichera le maillot en blanc &agrave; l&#8217;exception du col qui restera noir.</span>
+
+<span class="comment">% Comme vu dans le cours (Filtrage Spectral, p. 42), on peut construire un</span>
+<span class="comment">% filtre passe-haut &agrave; partir d'un filtre passe-bas. Nous transformons</span>
+<span class="comment">% chacun des filtres passe-bas test&eacute;s en filtres passe-haut pour les</span>
+<span class="comment">% comparer.</span>
+
+<span class="comment">% Question 5 (1 point)</span>
+<span class="comment">% Cr&eacute;ez un filtre qui vous permettra de conserver uniquement la texture des</span>
+<span class="comment">% deux manches. Ici, vous pouvez utiliser le filtre qui vous convient . Il est possible de</span>
+<span class="comment">% cr&eacute;er un filtre id&eacute;al dans Paint puis d&#8217;effectuer un seuillage sur l&#8217;image r&eacute;sultante</span>
+
+<span class="comment">% Question 6 (1 point)</span>
+<span class="comment">% ) Cr&eacute;ez un filtre qui vous permettra de faire disparaitre la texture du torse.</span>
+<span class="comment">% Ici, vous pouvez utiliser le filtre qui vous convient</span>
+
+<span class="comment">% Question 7 (0.5 point)</span>
+<span class="comment">% Quelle est la diff&eacute;rence entre utiliser un filtre id&eacute;al ou un filtre Butterworth</span>
+<span class="comment">% lors du filtrage ?</span>
+<span class="comment">% Solution: Selon les notes de cours, le filtre de Butterworth est plus</span>
+<span class="comment">% facile &agrave; mettre en oeuvre. De plus, il permet un contr&ocirc;le sur la transition</span>
+<span class="comment">% de coupureen augmentant l'ordre. Avec un ordre suffisamment &eacute;lev&eacute;, on se</span>
+<span class="comment">% rapproche d'un filtre id&eacute;al.</span>
+
+<span class="comment">% Question 8 (0.5 point)</span>
+<span class="comment">% Que se passe-t-il si on ne conserve pas la composante moyenne (fr&eacute;quence</span>
+<span class="comment">% 0) dans les filtres ?</span>
+<span class="comment">% Solution: Si on ne conserve pas la composante moyenne dans les</span>
+<span class="comment">% filtres, l'image r&eacute;sultante risque d'&ecirc;tre tr&egrave;s sombre, puisqu'elle</span>
+<span class="comment">% contiendra des valeurs n&eacute;gatives (donc nulle &agrave; l'affichage).</span>
+
+<span class="comment">% Question 9 (0.5 point)</span>
+<span class="comment">% Filtre: Passe-haut, puisque les &eacute;l&eacute;ments apparaissent progressivement,</span>
+<span class="comment">% puis que la couleur moyenne de l'image appara&icirc;t en dernier.</span>
+</pre><img vspace="5" hspace="5" src="TP_12.png" alt=""> <img vspace="5" hspace="5" src="TP_13.png" alt=""> <img vspace="5" hspace="5" src="TP_14.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+type Egalisation_Histogramme.m
+type Convolution.m
+type Rehaussement_Contour.m
+type Binariser.m
+type Fermeture.m
+type Compter_Monnaie.m
+type Calculer_TFD.m
+
+%% Exercice 1 (5 points): Rehaussement d'image
+
+% Nettoyage du workspace
+clear all;
+close all;
+clc;
+
+% Question 1 (1.5 points)
+% Chargez l’image theArtist.png avec la fonction imread
+% imread: https://www.mathworks.com/help/matlab/ref/imread.html
+Image = imread('theArtist.png');
+
+% Fonction Egalisation_Histogramme implémentée
+% voir Egalisation_Histogramme.m
+ImageEgalisee = Egalisation_Histogramme(Image);
+
+% Affichage résultats
+figure('Name' , 'Question 1 - Egalisation d histogrammes (Moins sombre)');
+subplot(2,2,1);
+imshow(Image);
+title('Image originale sombre');
+subplot(2,2,3);
+imhist(Image);
+title('Histogramme image originale');
+grid on;
+subplot(2,2,2);
+imshow(ImageEgalisee);
+title('Image égalisée');
+subplot(2,2,4);
+imhist(ImageEgalisee);
+title('Histogramme de l image égalisée');
+grid on;
+
+% Question 2 (1 point)
+% Voir Convolution.m
+
+% Question 3 (0.5 point)
+% L’image égalisée semble très bruitée. Appliquez un flou gaussien à l’image
+ %égalisé en la convoluant.
+ 
+MasqueGaussien =   [1 2 1 2 1;
+                     2 4 8 4 2;
+                     1 8 18 8 1;
+                     2 4 8 4 2;
+                     1 2 1 2 1] /90;
+                 
+ImageFiltree = Convolution(ImageEgalisee, MasqueGaussien);
+
+% Affichage résultats
+figure('Name' , 'Question 2&3 - Convolution Gaussienne de l image (Moins de bruit)');
+subplot(2,2,1);
+imshow(ImageEgalisee);
+title('Image égalisée');
+subplot(2,2,3);
+imhist(ImageEgalisee);
+title('Histogramme de l image égalisée');
+grid on;
+subplot(2,2,2);
+imshow(ImageFiltree);
+title('Image floutée');
+subplot(2,2,4);
+imhist(ImageFiltree);
+title('Histogramme de l image floutée');
+grid on;
+
+% Question 4 (1 point)
+[ imageRehaussee, Laplacien ] = Rehaussement_Contour( ImageEgalisee, 1.2, 1 );
+
+figure('Name', 'Question 4 - Resultat de rehaussement et le Laplacien');
+subplot(2,3,1);
+imshow(ImageFiltree);
+title('Image floutée mais dégradée');
+subplot(2,3,4);
+imhist(ImageFiltree);
+title('Histogramme de l image floutée');
+grid on;
+subplot(2,3,2);
+imshow(imageRehaussee);
+title('Résultat du rehaussement');
+subplot(2,3,5);
+imhist(imageRehaussee);
+title('Histogramme du résultat');
+grid on;
+subplot(2,3,3);
+imshow(Laplacien);
+title('Le Laplacien');
+subplot(2,3,6);
+imhist(Laplacien);
+title('Histogramme du Laplacien');
+grid on;
+
+% Question 5 (1 point)
+% Bien que les contours aient été rehaussés, on voit apparaître un nouveau 
+% bruit.
+
+% Afin d'en être sur, nous avons, dans un premier temps, testé différentes valeurs du paramètre
+% K. Comme nous pouvons le voir à la figure 4, la première image utilise
+% k=1,2 tel que demandé dans l'énnoncé. La deuxième image utilise un K=0,2.
+% Cette image a moins de bruit, mais les contours sont comme si on n'avait
+% rien fait. La troisième image, quant à elle, a un K=2,4. Ces contours
+% sont assez définis, mais il y a énormément de bruit. Donc, plus on veut
+% rehausser les contours en augmentant la veleur de K, plus le bruit s'élève.
+%
+% Dans un deuxième temps, nous avons testé les quatres différents masques
+% Laplacien donnés dans les notes de cours. Le filtre exigé dans l'énnoncé
+% semblait être le 2e meilleur filtre.
+%
+% Dans un troisième temps, nous pouvons utiliser un filtre Median afin de
+% préserver les contours tout en enlevant ce bruit qui somple êtrede type
+% "poivre et sel".
+%
+% Une solution idéale serait donc de prendre le meilleur filtre
+% (L = [0 -1 0; -1 4 -1; 0 -1 0]) et de diminuer un peu la valeur du
+% paramèetre K. 
+
+% TESTS de l'algorithme de rehaussement de contour
+% ... avec un Masque Laplacien qui diffèere (4 possibles selon les notes de cours)
+[ imageRehaussee2, Laplacien2 ] = Rehaussement_Contour( ImageEgalisee, 1.2, 4 );
+% ... avec un paramètre K plus bas et plus levé
+[ imageRehaussee3, Laplacien3 ] = Rehaussement_Contour( ImageEgalisee, 0.2, 1 );
+[ imageRehaussee4, Laplacien4 ] = Rehaussement_Contour( ImageEgalisee, 2.4, 1 );
+
+figure('Name', 'Question 5 - Tests');
+subplot(1,4,1);
+imshow(imageRehaussee);
+title('Masque original k=1,2');
+subplot(1,4,4);
+imshow(imageRehaussee2);
+title('Masque différent k=1,2');
+subplot(1,4,2);
+imshow(imageRehaussee3);
+title('Masque original k=0,2');
+subplot(1,4,3);
+imshow(imageRehaussee4);
+title('Masque original k=2.4');
+
+
+%% Exercice 2 (5 points): Compteur de monnaie
+
+% Nettoyage du workspace
+clear all;
+close all;
+clc;
+
+% Question 1 (0.5 point)
+% Chargez l’image pieces.jpg
+Image = imread('pieces.jpg');
+% Convertissez la en niveau de gris
+ImageGris = rgb2gray(Image);
+
+% Affichez cette image
+figure('Name', 'Question 1 - Niveau de gris');
+subplot(1,2,1);
+imshow(Image);
+title('Image originale');
+subplot(1,2,2);
+imshow(ImageGris);
+title('Image en gris');
+
+% Question 2 (1 point)
+% Voir Binariser.m
+ImageBinaire = Binariser(ImageGris, 250);
+% Inverser les couleurs
+ImageBinaireInverse = 255 - ImageBinaire;
+
+% Affichez l'image binaire
+figure('Name', 'Question 2 - Binariser');
+subplot(1,2,1);
+imshow(ImageBinaire);
+title('Couleurs originales');
+subplot(1,2,2);
+imshow(ImageBinaireInverse);
+title('Couleurs inversées');
+
+% Question 3 (1.5 points)
+% On va tester avec des forme(Shapes) et des paramètres différents de l'élément structurant.
+
+% Voir Fermeture.m
+% Tests avec différentes formes comme élément de structure (SE)
+ImageFermee1 = Fermeture( ImageBinaireInverse, 'square', 1);
+ImageFermee2 = Fermeture( ImageBinaireInverse, 'sphere', 1);
+ImageFermee3 = Fermeture( ImageBinaireInverse, 'diamond', 1);
+
+figure('Name', 'Question 3 - Fermeture avec des différentes formes pour l élément structurant (SE)');
+subplot(1,3,1);
+imshow(ImageFermee1);
+title('SE: Carré');
+subplot(1,3,2);
+imshow(ImageFermee2);
+title('SE: Sphère');
+subplot(1,3,3);
+imshow(ImageFermee3);
+title('SE: Diamand');
+
+% Comme nous pouvons le voir dans la figure 3, la sphère semble être une
+% meilleure option afin de fermer les trous des pièces.
+
+% Tests avec un paramètre (ici un rayon)
+ImageFermee4 = Fermeture( ImageBinaireInverse, 'sphere', 1);
+ImageFermee5 = Fermeture( ImageBinaireInverse, 'sphere', 10);
+
+figure('Name', 'Question 3 - Fermeture avec une sphère avec un rayon différent');
+subplot(1,2,1);
+imshow(ImageFermee4);
+title('r = 1');
+subplot(1,2,2);
+imshow(ImageFermee5);
+title('r = 10');
+
+% Aussi, plus le paramètre "Parameter" de notre fonction Fermeture( Image,
+% ShapeType, Parameter) est grand, plus le remplissage est optimal.
+% Cependant, le temps d'exécution augmente considérablement.
+%
+% La solution optimale est donc de prendre, parmis nos essaies, un
+% élément strucurant ayant comme forme une sphère et un rayon (Parameter)
+% égal à 10.
+
+
+% Question 4 (2 points)
+% Nous utilisons la meilleure image fermée, soit ImageFermee5, tel
+% qu'expliqué à la question précédente.
+
+disp('Montant total: ')
+% Afin que le montant soit en format banque (à 2 décimales après la virgule)
+format bank
+% Voir Compter_Monnaie.m
+Compter_Monnaie(ImageFermee5) % $
+
+%% Exercice 3 (3.5 points): Transformée de Fourier 2D
+
+% Nettoyage du workspace
+clear all;
+close all;
+clc;
+
+% Question 1 (0.5 point)
+% Chargez les images
+ImageVert = imread('Barres_Verticales.png');
+ImageHoriz = imread('Barres_Horizontales.png');
+ImageObli = imread('Barres_Obliques.png');
+
+% Afficher les images
+figure('Name' , 'Question 1 - Des barres...');
+subplot(1,3,1);
+imshow(ImageVert);
+title('verticales')
+subplot(1,3,2);
+imshow(ImageHoriz);
+title('horizontales')
+subplot(1,3,3);
+imshow(ImageObli);
+title('obliques')
+
+% Question 2 (1.5 points)
+
+% Calculez les TFD des trois images
+TFD_vert = Calculer_TFD(ImageVert);
+TFD_horz = Calculer_TFD(ImageHoriz);
+TFD_obli = Calculer_TFD(ImageObli);
+
+% Affichez les TFDs calculés
+% Pour des fins de visualisation, nous utilisons log(1 + TFD(IM)).
+figure('Name' , 'Question 2 - Images des barres et de leurs histogrammes');
+subplot(2,3,4);
+imshow(log(1 + TFD_vert),[]);
+subplot(2,3,5);
+imshow(log(1 + TFD_horz),[]);
+subplot(2,3,6);
+imshow(log(1 + TFD_obli),[]);
+% Afficher les images originales pour une meilleure analyse
+subplot(2,3,1);
+imshow(ImageVert);
+title('verticales')
+subplot(2,3,2);
+imshow(ImageHoriz);
+title('horizontales')
+subplot(2,3,3);
+imshow(ImageObli);
+title('obliques')
+
+% Question 3 (0.5 point)
+% Tournez l’image Barres_Verticales.png de 70 degrés avec l’aide de imrotate
+% imrotate: https://www.mathworks.com/help/images/ref/imrotate.html
+% Utilisez l’option bilinear et crop de la fonction imrotate
+ImageVertTourne = imrotate(ImageVert, 70, 'bilinear', 'crop');
+
+% Calculez TFD de l'image tournée
+TFD_VertTourne = Calculer_TFD(ImageVertTourne);
+
+% Affichez la TFD de l'image tournéee
+figure('Name' , 'Question 3');
+subplot(2,1,2);
+imshow(log(1+TFD_VertTourne),[]);
+subplot(2,1,1);
+% Afficher l'image originale pour une meilleure analyse
+imshow(ImageVertTourne);
+title('Barres verticales tournées')
+
+% Question 4 (1 point)
+% Par la comparaison des images en 2, et en 3, on peut inférer que la 
+% rotation d'une image se traduit par une rotation identique dans le plan 
+% des fréquences, tel qu'expliqué ici: 
+% (http://www.tsi.enst.fr/pages/enseignement/ressources/mti/ondelettes-2g/francais/Fourier/TF2D.htm)
+
+%% Exercice 4 (6.5 points): Filtrage spectral
+
+% Nettoyage du workspace
+clear all;
+close all;
+clc;
+
+% Question 1 (0.5 point)
+% Chargez l’image maillot.png
+imageMaillot = imread('maillot.png');
+
+% Calculez sa TFD  et conserver la phase de la TFD (sans abs donc sans notre fonction créée)
+
+% 1) Calculez la TFD de l'Image avec la fonction fft2
+% fft2: % https://www.mathworks.com/help/matlab/ref/fft2.html
+TFD_maillot = fft2(imageMaillot);
+
+% 2) Centrez la TFD avec fftshift
+% fftshift: https://www.mathworks.com/help/matlab/ref/fftshift.html
+TFD_maillot_centre = fftshift(TFD_maillot);
+
+% 3) Normalisez la TFD
+sizeX = size(TFD_maillot_centre, 1);
+sizeY = size(TFD_maillot_centre, 2);
+TFD_maillot_norm = TFD_maillot_centre/(sizeX*sizeY);
+
+% Affichez l'image et sa TFD calculée (mettre abs dans la fonction)
+% Pour des fins de visualisation, nous utilisons log(1 + TFD(IM)).
+figure('Name' , 'Question 1 - TFD du maillot');
+subplot(1,2,1);
+imshow(imageMaillot);
+title('Image originale');
+subplot(1,2,2);
+TFD_maillot_reel = abs(TFD_maillot_norm);
+imshow(log(1+TFD_maillot_reel),[]);
+title('Histogramme');
+
+% Note: c'est plus clair sans "[]" dans imshow comme ceci
+% imshow(log(1+TFD_maillot_reel));
+
+% Question 2 (1 point)
+figure('Name' , 'Question 2 - Identification des textures');
+schemaMaillot = imread('Schema_maillot.png');
+imshow(schemaMaillot);
+
+% Question 3 (1 point)
+
+% Créer un filtre passe-bas gaussien dans le domaine spectral avec la
+% fonction fspecial pour faire disparaitre les hachures de la poche.
+% La taille de votre filtre doit être de la même taille que le spectre.
+% fspecial: https://www.mathworks.com/help/images/ref/fspecial.html
+
+% Testons 3 différents suigmas et affichohns-les.
+h1 = fspecial('gaussian', size(imageMaillot), 1);
+h2 = fspecial('gaussian', size(imageMaillot), 2);
+h3 = fspecial('gaussian', size(imageMaillot), 3);
+
+% imfilter: https://www.mathworks.com/help/images/ref/imfilter.html
+maillot_filtre1 = imfilter(imageMaillot, h1);
+maillot_filtre2 = imfilter(imageMaillot, h2);
+maillot_filtre3 = imfilter(imageMaillot, h3);
+
+figure('Name' , 'Question 3 - Faire disparaitre les hachures de la poche');
+subplot(1,4,1);
+imshow(imageMaillot);
+title('Sans filtre');
+subplot(1,4,2);
+imshow(maillot_filtre1);
+title('Sigma = 1');
+subplot(1,4,3);
+imshow(maillot_filtre2);
+title('Sigma = 2');
+subplot(1,4,4);
+imshow(maillot_filtre3);
+title('Sigma = 3');
+
+% Comme nous pouvons le remarquer, la valeur minimale que doit avoir le
+% paramètre sigma est 2 si l'on utilise la fonction imfilter.
+
+% Question 4 (0.5 point)
+% En vous inspirant de la méthode précédente, créez le filtre passe-haut qui
+% affichera le maillot en blanc à l’exception du col qui restera noir.
+
+% Comme vu dans le cours (Filtrage Spectral, p. 42), on peut construire un
+% filtre passe-haut à partir d'un filtre passe-bas. Nous transformons
+% chacun des filtres passe-bas testés en filtres passe-haut pour les
+% comparer. 
+
+% Question 5 (1 point)
+% Créez un filtre qui vous permettra de conserver uniquement la texture des
+% deux manches. Ici, vous pouvez utiliser le filtre qui vous convient . Il est possible de
+% créer un filtre idéal dans Paint puis d’effectuer un seuillage sur l’image résultante
+
+% Question 6 (1 point)
+% ) Créez un filtre qui vous permettra de faire disparaitre la texture du torse.
+% Ici, vous pouvez utiliser le filtre qui vous convient
+
+% Question 7 (0.5 point)
+% Quelle est la différence entre utiliser un filtre idéal ou un filtre Butterworth
+% lors du filtrage ?
+% Solution: Selon les notes de cours, le filtre de Butterworth est plus
+% facile à mettre en oeuvre. De plus, il permet un contrôle sur la transition
+% de coupureen augmentant l'ordre. Avec un ordre suffisamment élevé, on se 
+% rapproche d'un filtre idéal.
+
+% Question 8 (0.5 point)
+% Que se passe-t-il si on ne conserve pas la composante moyenne (fréquence
+% 0) dans les filtres ?
+% Solution: Si on ne conserve pas la composante moyenne dans les
+% filtres, l'image résultante risque d'être très sombre, puisqu'elle
+% contiendra des valeurs négatives (donc nulle à l'affichage).
+
+% Question 9 (0.5 point)
+% Filtre: Passe-haut, puisque les éléments apparaissent progressivement,
+% puis que la couleur moyenne de l'image apparaît en dernier.
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,8 @@
+Sim:5000
+Max:6000
+Phil:7000
+Franck:5500
+CLAVEL:6000
+Clavel:5980
+h4x0r:20920
+leClavel:19595

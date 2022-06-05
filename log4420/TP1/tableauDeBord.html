@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./generalStyle.css">
+    <title>Tableau de bord</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="./accueil.html">Accueil</a> |
+            <a href="./tableauDeBord.html">Tableau de bord</a> |
+            <a href="./instruction.html">Instructions</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h1 class="page-header">Tableau de bord</h1>
+
+            <section>
+                <h2>Évaluation possible</h2>
+                <section>
+                    <h3>Test Rapide</h3>
+                    <form action="./testRapidePage1.html">
+                        <input type="submit" value="Effectuer un test rapide" />
+
+                    </form>
+                </section>
+                <br>
+                <section>
+                    <h3>Examen</h3>
+                    <form action="./examenPage1.html">
+                        <label for="domaine">Domaine : </label>
+                        <select id="domaine">
+                              <option value="HTML">HTML</option>
+                              <option value="CSS">CSS</option>
+                              <option value="JavaScript">JavaScript</option>
+                            </select>
+                        <br>
+                        <label for="nbQuestions">Nombre de questions : </label><input id="nbQuestions" type="number" min="1" />
+                        <br>
+                        <input type="submit" value="Effectuer l'examen" />
+                    </form>
+                </section>
+            </section>
+            <section>
+                <h2>Statistique</h2>
+                <section>
+                    <h3>Tests Rapides</h3>
+                    <p>Nombre de tests rapides réussis : 10</p>
+                    <p>Nombre de tests rapides éffectués : 20</p>
+                    <p>Ratio : 50%</p>
+                    <p>Moyenne : 86%</p>
+                </section>
+                <section>
+                    <h3>Examens</h3>
+                    <ul>
+                        <li>(15/07/2016) Examen HTML : 78%</li>
+                        <li>(12/05/2016) Examen JavaScript : 98%</li>
+                        <li>(06/03/2015) Examen CSS : 56%</li>
+                    </ul>
+                </section>
+            </section>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>Philippe Fortin : 1716309</p>
+        <p>Maxime Clavel : 1693596</p>
+    </footer>
+</body>
+
+</html>

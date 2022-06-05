@@ -1,0 +1,30 @@
+extend layout
+block content
+  main
+    section
+      h1(class='page-header') Tableau de bord
+      div.flex-container.col-m-12.col-8
+        div#evaluation-panel.col-m-6.col-6
+          section.sub-container
+            h2.sub-container-title Test Rapide
+            form(action='/testRapide/1')
+              input.default-button.col-m-12.col-12(type='submit' value='Effectuer un test rapide')
+          section.sub-container
+            h2.sub-container-title Examen
+            form(action='/examen/1')
+              label.form-label(for='domaine') Domaine
+              select.form-input.col-m-12.col-12(id='domaine')
+                option(value='HTML') HTML
+                option(value='CSS') CSS
+                option(value='JavaScript') JavaScript
+              label.form-label(for='nbQuestion') Nombre de question
+              input#nbQuestion.form-input.col-m-12.col-12(type='number' min='1')
+              input.default-button.col-m-12.col-12(type='submit' value="Effectuer l'examen")
+        section#stats-panel.col-m-6.col-6
+          include statistiques.pug
+          a.popup-button(href='#details') Détails
+      #details.overlay
+       .details
+          a.close(href='#') ×
+          .content
+            include details.pug
